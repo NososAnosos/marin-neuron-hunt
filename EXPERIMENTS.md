@@ -137,8 +137,9 @@ by: {github: your-handle, method: human}
 
 ## Results
 
-The runner writes `results/<request id>.yaml` with the measured numbers, `outcome: confirmed | refuted |
-inconclusive`, the model commit and the date.
+The runner ([`runner/`](runner/)) starts at 21:00 UTC and takes every merged request that has no result yet,
+oldest merge first. It writes `results/<request id>.yaml` with the measured numbers, `outcome: confirmed |
+refuted | inconclusive`, the model commit and the date.
 
 **One results PR per request.** Each result gets its own PR, titled `Results <request id>: <outcome>`, that
 commits only `results/<request id>.yaml`. The runner then comments on the PR that added the request (and on
@@ -153,9 +154,16 @@ After a results PR merges, the explanation author or a maintainer updates the si
 in the explanation and cites the results PR. After a `refuted` result, also revise the explanation to fit
 the numbers, or set the side to `unclear`.
 
+- Steering and ablation baselines draw their 100 random neurons with a seed taken from the request id, so a
+  rerun gives the same numbers.
+- If a marked target isn't exactly one token, the request doesn't run and comes back **inconclusive** with
+  the reason. The `tokens` check on your PR catches this before merge, and its log prints every target token:
+  check that each one is the token you meant.
+- Type E requests aren't run automatically; a maintainer runs them by hand.
+
 ## Limits
 
 - At most **3 open requests per contributor** at a time. Each daily batch runs requests in the order they were
-  merged, up to the day's compute cap.
+  merged, up to the day's compute cap. Requests past the cap run the next day, still in merge order.
 - Prompts are at most 512 tokens. Longer ones go in as type E.
 - Requests built to make the model produce harmful content are closed.

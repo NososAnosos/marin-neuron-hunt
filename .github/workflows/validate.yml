@@ -23,6 +23,29 @@ jobs:
       - run: python -m unittest scripts/test_check_design.py
       - run: python -m unittest scripts/test_design_session_note.py
 
+  # Each [[ ]] target must be one Marin token, as the daily runner requires. The log lists every target token.
+  tokens:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml "transformers==5.10.2"
+      - run: python scripts/check_tokens.py
+
+  # The runner's hooks (on a tiny random model) and pass rules.
+  runner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "torch==2.11.*" --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install "transformers==5.10.2" pyyaml jsonschema pyarrow numpy
+      - run: python -m unittest runner/test_runner.py
+
   # Fails a PR that changes the explanation of a neuron someone else holds on Station House.
   claims:
     if: github.event_name == 'pull_request'
