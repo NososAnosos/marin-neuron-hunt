@@ -75,7 +75,7 @@ Revise the design between rounds. When you finish, you get a `Design-Session: ds
 the PR description.
 
 To run it:
-- **Claude Code:** install the plugin (`/plugin marketplace add likelytobelaura/stationhouse-cli`,
+- **Claude Code:** install the plugin (`/plugin marketplace add Station-House/stationhouse-cli`,
   then `/plugin install stationhouse@stationhouse-cli`) and ask it to open the PR. The questions
   appear as a form in Claude Code, and the plugin won't push a request whose design hasn't been
   reviewed.
