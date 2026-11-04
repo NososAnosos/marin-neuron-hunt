@@ -62,6 +62,30 @@ After the run, leave the design as it was, and put anything that changed in the 
 failure tells you exactly which prompts broke. Move on to steering (B) or ablation (C) only once the
 side fires where you say it does.
 
+### Before you open the PR: the Experimentation Wizard
+
+Once the design is written, run it through the Station House Experimentation Wizard: three rounds
+of reviewer questions on your design, which you answer yourself.
+
+1. **The claim and the controls**
+2. **The data and the noise**
+3. **The metric and the readout**
+
+Revise the design between rounds. When you finish, you get a `Design-Session: ds_…` line: put it in
+the PR description.
+
+To run it:
+- **Claude Code:** install the plugin (`/plugin marketplace add Station-House/stationhouse-cli`,
+  then `/plugin install stationhouse@stationhouse-cli`) and ask it to open the PR. The questions
+  appear as a form in Claude Code, and the plugin won't push a request whose design hasn't been
+  reviewed.
+- **Other agents:** `stationhouse mcp`, plus `stationhouse hooks install` for the same push check.
+- **Without MCP:** `stationhouse design start "<title>"`, then `stationhouse design round <file>`
+  for each round.
+
+A request PR without the line gets a warning in CI and a note on the Station House platform. Both
+are notes, not blocks.
+
 ## Tools
 
 ```bash

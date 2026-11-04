@@ -21,6 +21,7 @@ jobs:
       - run: python scripts/validate.py
       - run: python -m unittest scripts/test_check_claims.py
       - run: python -m unittest scripts/test_check_design.py
+      - run: python -m unittest scripts/test_design_session_note.py
 
   # Fails a PR that changes the explanation of a neuron someone else holds on Station House.
   claims:
@@ -53,6 +54,13 @@ jobs:
         with:
           python-version: "3.12"
       - run: python scripts/check_design.py
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+      # A note, not a gate: requests without a Station House Experimentation Wizard review get a warning.
+      - run: python scripts/design_session_note.py
+        if: always()
+        continue-on-error: true
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
