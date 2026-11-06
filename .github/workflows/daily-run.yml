@@ -1,0 +1,67 @@
+name: daily-run
+
+# Runs merged requests that have no result yet on Marin 32B (Modal H200), opens one results PR per request and
+# comments on the request's PR (and the explanation PR) with its link. See EXPERIMENTS.md, "Results".
+
+on:
+  schedule:
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Only list today's batch and check prompts (no GPU)"
+        type: boolean
+        default: true
+      only:
+        description: "Run just this request id (e.g. L0-N10657-001)"
+        type: string
+        default: ""
+      rerun:
+        description: "With 'only': run it again even if it has a result (a new results PR replaces the file)"
+        type: boolean
+        default: false
+      cap_usd:
+        description: "Compute cap for this run, USD"
+        type: string
+        default: "10"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: daily-run
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.RUNNER_GH_TOKEN || github.token }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "modal>=1.0" pyyaml jsonschema "transformers==5.10.2"
+      - run: |
+          git config user.name "marin-hunt-runner"
+          git config user.email "marin-hunt-runner@users.noreply.github.com"
+      - name: Run
+        env:
+          MODAL_TOKEN_ID: ${{ secrets.MODAL_TOKEN_ID }}
+          MODAL_TOKEN_SECRET: ${{ secrets.MODAL_TOKEN_SECRET }}
+          GH_TOKEN: ${{ secrets.RUNNER_GH_TOKEN || github.token }}
+          RUNNER_CAP_USD: ${{ inputs.cap_usd || '10' }}
+        run: |
+          args=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then
+            args="--dry-run"
+          else
+            args="--publish"
+          fi
+          if [ -n "${{ inputs.only }}" ]; then args="$args --only ${{ inputs.only }}"; fi
+          if [ "${{ inputs.rerun }}" = "true" ]; then args="$args --rerun"; fi
+          python -m runner.main $args

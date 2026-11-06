@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Marin confirmation-experiment result",
+  "description": "results/<request id>.yaml, written by the daily runner (runner/). Don't write these by hand.",
+  "type": "object",
+  "required": ["request", "type", "outcome", "summary", "per_prompt", "model", "runner_commit", "request_commit", "gpu", "date"],
+  "properties": {
+    "request": {"type": "string", "pattern": "^L\\d+-N\\d+-\\d{3}$"},
+    "type": {"enum": ["activation-test", "steering", "ablation", "contrast", "custom"]},
+    "outcome": {"enum": ["confirmed", "refuted", "inconclusive"]},
+    "reason": {"type": ["string", "null"]},
+    "summary": {"type": "object"},
+    "per_prompt": {"type": "array", "items": {"type": "object"}},
+    "model": {"type": "string", "minLength": 1},
+    "runner_commit": {"type": "string"},
+    "request_commit": {"type": "string"},
+    "gpu": {"type": "string"},
+    "date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "seconds": {"type": "number"},
+    "atlas_stats": {"type": "object"},
+    "baseline_neurons": {"type": "array", "items": {"type": "integer"}},
+    "baseline_sets": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}}
+  }
+}

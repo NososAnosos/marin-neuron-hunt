@@ -18,7 +18,8 @@ REQUEST_ID = re.compile(r"^(L\d+-N\d+)-(\d{3})$")
 
 
 def load_schemas():
-    schemas = {name: json.loads((ROOT / "schema" / f"{name}.schema.json").read_text()) for name in ("explanation", "request")}
+    schemas = {name: json.loads((ROOT / "schema" / f"{name}.schema.json").read_text())
+               for name in ("explanation", "request", "result")}
     registry = Registry().with_resources(
         (f"{name}.schema.json", Resource.from_contents(schema)) for name, schema in schemas.items()
     )
@@ -89,6 +90,13 @@ def main():
         data = load_yaml(path, errors)
         if data is not None:
             check_request(path, data, validators["request"], errors)
+    for path in sorted((ROOT / "results").glob("*.y*ml")):
+        count += 1
+        data = load_yaml(path, errors)
+        if data is not None:
+            schema_errors(validators["result"], data, path, errors)
+            if data.get("request") != path.stem:
+                errors.append(f"{path}: file name says {path.stem} but the result is for {data.get('request')}")
     for path in sorted((ROOT / "examples").glob("*.yaml")):
         count += 1
         data = load_yaml(path, errors)
