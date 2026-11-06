@@ -1,0 +1,35 @@
+type: activation-test
+neuron: L0-N10657
+side: "+"
+hypothesis: >-
+  The positive side exceeds its atlas 99th percentile (pos_q99 = 0.9822) on frequent lowercase English
+  content-word morphemes, and stays below it on ALL-CAPS variants of the same words, capitalized names,
+  and foreign/rare tokens.
+should_fire:
+  - "The gallery displayed a striking[[ image]] of the harbor at dawn."
+  - "Her handwriting was bold[[ and]] impossible to ignore."
+  - "The proof shows the set must be[[ finite]] under these assumptions."
+  - "Almost every household now owns some[[ digital]] device."
+  - "Rivers[[ flow]] more slowly near their broad deltas."
+  - "New tools can[[ transform]] how small farms are run."
+  - "The architects kept the interior bright and[[ modern]] throughout."
+  - "The recipe is[[ simple]] enough for a weeknight dinner."
+  - "Good maps[[ rely]] on accurate survey data."
+  - "The committee praised the[[ innovative]] drainage design."
+  - "Topspin makes the ball[[ spin]] forward after it bounces."
+  - "They learned to[[ use]] the loom from their grandmother."
+should_not_fire:
+  - "The sign over the stall read[[ IMAGE]] in dripping paint."
+  - "The debugger printed the word[[ SIMPLE]] before crashing."
+  - "A stencil spelled[[ USE]] across the crate lid."
+  - "The byline read[[ Tribune]] and the date was 1934."
+  - "The deed listed[[ County]] as the filing authority."
+  - "The flight deck announced[[ İstanbul]] as the next stop."
+  - "Mission control tracked[[ NASA]] telemetry all night."
+  - "The cluster runs[[ Kubernetes]] on bare metal."
+  - "The caption read[[ PHOTO]] followed by a stock number."
+  - "The meter flashed[[ ENERGY]] and went dark."
+  - "She wrote her name as[[ número]] by mistake."
+  - "The margin held one stray[[ の]] and nothing else."
+threshold: atlas-q99
+by: {github: alexcasper, method: agent, model: "Hermes agent (glm-5.3-flash), ops_sh seat"}

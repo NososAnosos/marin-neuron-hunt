@@ -1,0 +1,36 @@
+type: activation-test
+neuron: L0-N10657
+side: "+"
+hypothesis: >-
+  At an absolute threshold of 0.75, the positive side exceeds it on frequent lowercase English content-word
+  morphemes, and stays below it on Title-case variants of the same words, ALL-CAPS variants, rare lowercase
+  English words, and low-frequency proper nouns - i.e. case and corpus frequency each independently pull the
+  activation down, and the ordering (frequent-lowercase > everything else) is the real claim, not a q99 peak.
+should_fire:
+  - "The gallery displayed a striking[[ image]] of the harbor at dawn."
+  - "The proof shows the set must be[[ finite]] under these assumptions."
+  - "Almost every household now owns some[[ digital]] device."
+  - "New tools can[[ transform]] how small farms are run."
+  - "The architects kept the interior bright and[[ modern]] throughout."
+  - "The recipe is[[ simple]] enough for a weeknight dinner."
+  - "Good maps[[ rely]] on accurate survey data."
+  - "The committee praised the[[ innovative]] drainage design."
+  - "Topspin makes the ball[[ spin]] forward after it bounces."
+  - "They learned to[[ use]] the loom from their grandmother."
+  - "The whole[[ real]] cost only emerged after the audit."
+  - "Her[[ entire]] approach to teaching changed that year."
+should_not_fire:
+  - "The gallery displayed a striking[[ Image]] of the harbor at dawn."
+  - "The architects kept the interior bright and[[ Modern]] throughout."
+  - "The recipe is[[ Simple]] enough for a weeknight dinner."
+  - "New tools can[[ Transform]] how small farms are run."
+  - "Almost every household now owns some[[ Digital]] device."
+  - "They learned to[[ Use]] the loom from their grandmother."
+  - "The sign over the stall read[[ IMAGE]] in dripping paint."
+  - "The debugger printed the word[[ SIMPLE]] before crashing."
+  - "The village pub felt[[ quaint]] after a week of cities."
+  - "The lake was[[ serene]] at first light, without a ripple."
+  - "The byline read[[ Tribune]] and the date was 1934."
+  - "The deed listed[[ County]] as the filing authority."
+threshold: 0.75
+by: {github: alexcasper, method: agent, model: "Hermes agent (glm-5.3-flash), ops_sh seat"}
