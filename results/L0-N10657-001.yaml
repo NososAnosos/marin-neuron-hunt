@@ -1,0 +1,132 @@
+request: L0-N10657-001
+type: activation-test
+outcome: refuted
+reason: null
+summary:
+  threshold: 0.982171893119812
+  should_fire_above: 0.08333333333333333
+  should_not_fire_below: 1.0
+  auroc: 0.8541666666666666
+  should_fire_mean: 0.83349609375
+  should_not_fire_mean: 0.5648600260416666
+per_prompt:
+- group: should_fire
+  prompt: The gallery displayed a striking[[ image]] of the harbor at dawn.
+  token: Ġimage
+  act: 0.78125
+- group: should_fire
+  prompt: Her handwriting was bold[[ and]] impossible to ignore.
+  token: Ġand
+  act: 0.404296875
+- group: should_fire
+  prompt: The proof shows the set must be[[ finite]] under these assumptions.
+  token: Ġfinite
+  act: 1.015625
+- group: should_fire
+  prompt: Almost every household now owns some[[ digital]] device.
+  token: Ġdigital
+  act: 0.9375
+- group: should_fire
+  prompt: Rivers[[ flow]] more slowly near their broad deltas.
+  token: Ġflow
+  act: 0.5859375
+- group: should_fire
+  prompt: New tools can[[ transform]] how small farms are run.
+  token: Ġtransform
+  act: 0.890625
+- group: should_fire
+  prompt: The architects kept the interior bright and[[ modern]] throughout.
+  token: Ġmodern
+  act: 0.96484375
+- group: should_fire
+  prompt: The recipe is[[ simple]] enough for a weeknight dinner.
+  token: Ġsimple
+  act: 0.94140625
+- group: should_fire
+  prompt: Good maps[[ rely]] on accurate survey data.
+  token: Ġrely
+  act: 0.93359375
+- group: should_fire
+  prompt: The committee praised the[[ innovative]] drainage design.
+  token: Ġinnovative
+  act: 0.87109375
+- group: should_fire
+  prompt: Topspin makes the ball[[ spin]] forward after it bounces.
+  token: Ġspin
+  act: 0.87890625
+- group: should_fire
+  prompt: They learned to[[ use]] the loom from their grandmother.
+  token: Ġuse
+  act: 0.796875
+- group: should_not_fire
+  prompt: The sign over the stall read[[ IMAGE]] in dripping paint.
+  token: ĠIMAGE
+  act: 0.5625
+- group: should_not_fire
+  prompt: The debugger printed the word[[ SIMPLE]] before crashing.
+  token: ĠSIMPLE
+  act: 0.6328125
+- group: should_not_fire
+  prompt: A stencil spelled[[ USE]] across the crate lid.
+  token: ĠUSE
+  act: 0.69140625
+- group: should_not_fire
+  prompt: The byline read[[ Tribune]] and the date was 1934.
+  token: ĠTribune
+  act: 0.46484375
+- group: should_not_fire
+  prompt: The deed listed[[ County]] as the filing authority.
+  token: ĠCounty
+  act: 0.416015625
+- group: should_not_fire
+  prompt: The flight deck announced[[ İstanbul]] as the next stop.
+  token: ĠÄ°stanbul
+  act: 0.1572265625
+- group: should_not_fire
+  prompt: Mission control tracked[[ NASA]] telemetry all night.
+  token: ĠNASA
+  act: 0.81640625
+- group: should_not_fire
+  prompt: The cluster runs[[ Kubernetes]] on bare metal.
+  token: ĠKubernetes
+  act: 0.78515625
+- group: should_not_fire
+  prompt: The caption read[[ PHOTO]] followed by a stock number.
+  token: ĠPHOTO
+  act: 0.59765625
+- group: should_not_fire
+  prompt: The meter flashed[[ ENERGY]] and went dark.
+  token: ĠENERGY
+  act: 0.59765625
+- group: should_not_fire
+  prompt: She wrote her name as[[ número]] by mistake.
+  token: ĠnÃºmero
+  act: 0.423828125
+- group: should_not_fire
+  prompt: The margin held one stray[[ の]] and nothing else.
+  token: Ġãģ®
+  act: 0.6328125
+model: marin-community/marin-32b-base@f19b346615212ff9a6d92c10861a9cdb100cbf97
+runner_commit: 3968a01886e7528266edf578e4e14bda29afeaef
+request_commit: 1447456666073fd1702549cdc90625d4999860df
+gpu: NVIDIA H200
+date: '2026-11-06'
+seconds: 2.1
+atlas_stats:
+  n: 9995501.0
+  mean: 0.7744210362434387
+  std: 0.11806967109441757
+  frac_pos: 0.9999516606330872
+  max: 1.09375
+  min: -0.333984375
+  scale_abs_p999: 1.0649856328964233
+  pos_q5: 0.8353625535964966
+  pos_q9: 0.982171893119812
+  pos_q99: 0.982171893119812
+  pos_q999: 1.0649856328964233
+  pos_q9999: 1.0649856328964233
+  neg_q5: 0.04531583562493324
+  neg_q9: 0.16548171639442444
+  neg_q99: 0.2689598798751831
+  neg_q999: 0.342891126871109
+  neg_q9999: 0.342891126871109
