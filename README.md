@@ -25,9 +25,8 @@ stream and dense activations.
    `results/<request id>.yaml`, linked from a comment on your PR. The side's `verification` then becomes
    `confirmed`, `refuted` or `inconclusive`.
 
-> **Status (October 2026):** the repo, format and experiment menu are ready, and explanations are being
-> accepted now. **The daily experiment runner is not live yet.** Requests merged before it starts wait in the
-> queue and run in its first batches. The Station House project page shows when that changes.
+> **Status (November 2026):** the daily experiment runner is live. It runs merged requests every day at
+> 21:00 UTC and opens one results PR per request (see [EXPERIMENTS.md](EXPERIMENTS.md#results)).
 
 ## Which data to use
 
