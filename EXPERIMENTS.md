@@ -138,8 +138,20 @@ by: {github: your-handle, method: human}
 ## Results
 
 The runner writes `results/<request id>.yaml` with the measured numbers, `outcome: confirmed | refuted |
-inconclusive`, the model commit and the date, and posts a summary on the PR. A maintainer then updates the
-side's `verification` field in the explanation.
+inconclusive`, the model commit and the date.
+
+**One results PR per request.** Each result gets its own PR, titled `Results <request id>: <outcome>`, that
+commits only `results/<request id>.yaml`. The runner then comments on the PR that added the request (and on
+the explanation PR, if that's a different one), linking the results PR. A rerun of the same request replaces
+its file in a new results PR.
+
+**Requests merge before they run.** A request runs only once it is on `main`. If the explanation in the same
+PR isn't ready yet, a maintainer can merge the request files in a PR of their own, keeping the author's
+credit, so the experiment doesn't wait on the explanation review.
+
+After a results PR merges, the explanation author or a maintainer updates the side's `verification` field
+in the explanation and cites the results PR. After a `refuted` result, also revise the explanation to fit
+the numbers, or set the side to `unclear`.
 
 ## Limits
 

@@ -21,8 +21,9 @@ stream and dense activations.
    and, if you want it tested, a confirmation-experiment request in `requests/`. Choose one from
    [the experiment menu](EXPERIMENTS.md) or design your own.
 4. **Review.** A maintainer checks the format and that the request is runnable, then merges.
-5. **Daily run.** Merged requests are run in a daily batch, and the results are posted on your PR and saved in
-   `results/`. The side's status then becomes `confirmed`, `refuted` or `inconclusive`.
+5. **Daily run.** Merged requests are run in a daily batch. Each result goes in its own results PR that adds
+   `results/<request id>.yaml`, linked from a comment on your PR. The side's `verification` then becomes
+   `confirmed`, `refuted` or `inconclusive`.
 
 > **Status (October 2026):** the repo, format and experiment menu are ready, and explanations are being
 > accepted now. **The daily experiment runner is not live yet.** Requests merged before it starts wait in the
