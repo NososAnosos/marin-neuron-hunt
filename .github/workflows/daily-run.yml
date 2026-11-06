@@ -1,7 +1,7 @@
 name: daily-run
 
-# Runs merged requests that have no result yet on Marin 32B (Modal H200), opens a results PR and comments on
-# each request's PR. See EXPERIMENTS.md, "Results".
+# Runs merged requests that have no result yet on Marin 32B (Modal H200), opens one results PR per request and
+# comments on the request's PR (and the explanation PR) with its link. See EXPERIMENTS.md, "Results".
 
 on:
   schedule:
@@ -16,6 +16,10 @@ on:
         description: "Run just this request id (e.g. L0-N10657-001)"
         type: string
         default: ""
+      rerun:
+        description: "With 'only': run it again even if it has a result (a new results PR replaces the file)"
+        type: boolean
+        default: false
       cap_usd:
         description: "Compute cap for this run, USD"
         type: string
@@ -59,4 +63,5 @@ jobs:
             args="--publish"
           fi
           if [ -n "${{ inputs.only }}" ]; then args="$args --only ${{ inputs.only }}"; fi
+          if [ "${{ inputs.rerun }}" = "true" ]; then args="$args --rerun"; fi
           python -m runner.main $args

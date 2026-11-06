@@ -2,8 +2,10 @@
 
     python -m runner.main --dry-run                 # what would run today, cost estimate, prompt check (CPU)
     python -m runner.main                           # run today's batch on Modal, write results/ locally
-    python -m runner.main --publish                 # ... then open the results PR and comment on request PRs
+    python -m runner.main --publish                 # ... then open one results PR per request and link it from
+                                                    #     the request's PR and the explanation PR
     python -m runner.main --only L0-N10657-001      # just one pending request
+    python -m runner.main --only L0-N10657-001 --rerun --publish   # rerun one; a new results PR replaces its file
     python -m runner.main --request-file x.yaml [y.yaml ...] --out dir/   # unmerged requests, results to dir/
 """
 
@@ -17,7 +19,7 @@ from pathlib import Path
 
 import yaml
 
-from runner import pick, report
+from runner import pick, publish, report
 from runner.prompts import check, load_tokenizer
 
 REPO = os.environ.get("GITHUB_REPOSITORY", "Station-House/marin-neuron-hunt")
@@ -35,46 +37,18 @@ def in_open_results_prs():
             for f in pr["files"] if f["path"].startswith("results/")}
 
 
-def source_pr(commit):
-    if not commit:
-        return None
-    try:
-        prs = json.loads(sh("gh", "api", f"repos/{REPO}/commits/{commit}/pulls"))
-    except subprocess.CalledProcessError:
-        return None
-    merged = [p for p in prs if p.get("merged_at")]
-    return (merged or prs or [{}])[0].get("number")
-
-
-def publish(records, date):
-    branch = f"results-{date}"
-    if sh("git", "ls-remote", "--heads", "origin", branch).strip():
-        branch += datetime.datetime.now(datetime.timezone.utc).strftime("-%H%M")
-    sh("git", "checkout", "-b", branch)
-    sh("git", "add", *[f"results/{r['request']}.yaml" for r in records])
-    outcomes = ", ".join(f"{r['request']} {r['outcome']}" for r in records)
-    sh("git", "commit", "-m", f"Results {date}: {outcomes}")
-    sh("git", "push", "origin", branch)
-    body = ["Daily runner results. Merge after a look; then update each side's `verification` field.", ""]
-    body += [f"- `{r['request']}` ({r['type']}): **{r['outcome']}**" for r in records]
-    url = sh("gh", "pr", "create", "-R", REPO, "--base", "main", "--head", branch, "--title", f"Results {date}",
-             "--body", "\n".join(body)).strip()
-    print(url)
-    for r in records:
-        num = source_pr(r["request_commit"])
-        if num:
-            sh("gh", "pr", "comment", str(num), "-R", REPO, "--body", report.comment(r) + f"\n\nResults PR: {url}")
-
-
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--publish", action="store_true")
     ap.add_argument("--only", default="")
+    ap.add_argument("--rerun", action="store_true", help="with --only: run it again even if it has a result")
     ap.add_argument("--cap-usd", type=float, default=float(os.environ.get("RUNNER_CAP_USD", 10)))
     ap.add_argument("--request-file", type=Path, nargs="+")
     ap.add_argument("--out", type=Path)
     a = ap.parse_args()
+    if a.rerun and not a.only:
+        ap.error("--rerun needs --only <request id>")
 
     if a.request_file:
         items = [pick.Pending(f.stem, f, yaml.safe_load(f.read_text()), 0, "") for f in a.request_file]
@@ -82,7 +56,8 @@ def main():
         a.publish = False
     else:
         exclude = in_open_results_prs() if a.publish or os.environ.get("GITHUB_ACTIONS") else set()
-        queue = [p for p in pick.pending(exclude) if not a.only or p.id == a.only]
+        rerun = {a.only} if a.rerun else set()
+        queue = [p for p in pick.pending(exclude - rerun, rerun) if not a.only or p.id == a.only]
         items, custom, later = pick.batch(queue, a.cap_usd)
 
     print(f"run: {len(items)}, custom (maintainer): {len(custom)}, over cap: {len(later)}, "
@@ -123,7 +98,10 @@ def main():
         print(f"{item['id']}: {rec['outcome']}" + (f" ({rec['reason'][:200]})" if rec["reason"] else ""))
         records.append(rec)
     if a.publish:
-        publish(records, date)
+        urls, failures = publish.publish(records)
+        if failures:
+            print(f"{len(failures)} of {len(records)} results PRs failed:", *failures, sep="\n  ")
+            return 1
     return 0
 
 

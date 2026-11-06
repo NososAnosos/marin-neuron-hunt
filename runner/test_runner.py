@@ -279,5 +279,136 @@ class TestStats(unittest.TestCase):
             s(1, 1)
 
 
+class FakeGit:
+    """Records git/gh calls; answers the read-only ones from canned data."""
+
+    def __init__(self, prs, remote=(), commit_prs=None, fail_push=()):
+        self.calls, self.prs, self.remote = [], prs, set(remote)
+        self.commit_prs, self.fail_push, self.n = commit_prs or {}, set(fail_push), 100
+
+    def __call__(self, *args):
+        import subprocess
+        self.calls.append(args)
+        if args[:3] == ("git", "rev-parse", "--abbrev-ref"):
+            return "main\n"
+        if args[:2] == ("git", "rev-parse"):
+            return "base0000\n"
+        if args[:2] == ("git", "ls-remote"):
+            return "".join(f"sha\trefs/heads/{b}\n" for b in self.remote)
+        if args[:3] == ("gh", "pr", "list"):
+            return json.dumps(self.prs)
+        if args[:2] == ("gh", "api"):
+            return json.dumps(self.commit_prs.get(args[2].split("/")[-2], []))
+        if args[:2] == ("git", "push") and args[-1] in self.fail_push:
+            raise subprocess.CalledProcessError(1, args, stderr="push rejected")
+        if args[:3] == ("gh", "pr", "create"):
+            self.n += 1
+            return f"https://github.com/x/y/pull/{self.n}\n"
+        return ""
+
+    def of(self, *prefix):
+        return [c for c in self.calls if c[:len(prefix)] == prefix]
+
+
+def pr(number, state, *paths, merged="", head="b"):
+    return dict(number=number, state=state, mergedAt=merged or None, headRefName=head,
+                files=[dict(path=p) for p in paths])
+
+
+class TestPublish(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        from runner import publish
+        self.publish = publish
+        self.tmp = tempfile.TemporaryDirectory()
+        (Path(self.tmp.name) / "results").mkdir()
+        self.root, publish.ROOT = publish.ROOT, Path(self.tmp.name)
+
+    def tearDown(self):
+        self.publish.ROOT = self.root
+        self.tmp.cleanup()
+
+    def rec(self, rid, outcome="refuted", commit="c0ffee1"):
+        res = experiments.activation_test(FakeMarin([[2.0]] * 10 + [[0.1]] * 10), act_req(), rid)
+        rec = report.record(dict(id=rid, request=act_req(), commit=commit), res, "f00dfeed", "2026-11-06", "H200")
+        rec["outcome"] = outcome
+        return rec
+
+    def test_one_pr_per_request_each_from_base(self):
+        prs = [pr(12, "MERGED", "requests/L0-N1-001.yaml", "requests/L0-N1-002.yaml", merged="2026-11-06"),
+               pr(3, "OPEN", "explanations/L0/L0-N1.yaml", "requests/L0-N1-001.yaml"),
+               pr(13, "MERGED", "results/L0-N1-001.yaml", head="results-L0-N1-001", merged="2026-11-06")]
+        fake = FakeGit(prs, commit_prs={"c0ffee1": [dict(number=12, merged_at="2026-11-06")]})
+        urls, failures = self.publish.publish([self.rec("L0-N1-001"), self.rec("L0-N1-002", "confirmed")], fake)
+        self.assertEqual(failures, [])
+        self.assertEqual(len(urls), 2)
+        creates = fake.of("gh", "pr", "create")
+        self.assertEqual([c[c.index("--title") + 1] for c in creates],
+                         ["Results L0-N1-001: refuted", "Results L0-N1-002: confirmed"])
+        # every results branch starts from the same base commit, so the PRs don't stack
+        self.assertEqual([c[-2:] for c in fake.of("git", "checkout", "-q", "-B")],
+                         [("results-L0-N1-001", "base0000"), ("results-L0-N1-002", "base0000")])
+        # each commits only its own file
+        self.assertEqual([c[2:] for c in fake.of("git", "add")],
+                         [("results/L0-N1-001.yaml",), ("results/L0-N1-002.yaml",)])
+        # request PR #12 and explanation PR #3 each get a comment with the right results PR link
+        comments = [(c[3], c[-1]) for c in fake.of("gh", "pr", "comment")]
+        self.assertEqual([n for n, _ in comments], ["12", "3", "12", "3"])
+        self.assertIn(urls["L0-N1-001"], comments[0][1])
+        self.assertIn(urls["L0-N1-002"], comments[2][1])
+        self.assertIn("#12, #3", creates[0][creates[0].index("--body") + 1])
+        # back on the starting branch at the end
+        self.assertEqual(fake.calls[-1], ("git", "checkout", "-q", "-f", "main"))
+
+    def test_rerun_gets_a_new_branch_and_same_pr_is_not_commented_twice(self):
+        import datetime
+        prs = [pr(3, "OPEN", "explanations/L0/L0-N1.yaml", "requests/L0-N1-001.yaml")]
+        fake = FakeGit(prs, remote=["results-L0-N1-001"], commit_prs={"c0ffee1": [dict(number=3, merged_at=None)]})
+        now = datetime.datetime(2026, 11, 7, 21, 5, tzinfo=datetime.timezone.utc)
+        self.publish.publish([self.rec("L0-N1-001")], fake, now)
+        self.assertEqual(fake.of("git", "push")[0][-1], "results-L0-N1-001-20261107-2105")
+        self.assertEqual([c[3] for c in fake.of("gh", "pr", "comment")], ["3"])
+
+    def test_explanation_pr_falls_back_to_latest_merged(self):
+        prs = [pr(5, "MERGED", "explanations/L2/L2-N9.yaml", merged="2026-10-01"),
+               pr(8, "MERGED", "explanations/L2/L2-N9.yaml", merged="2026-11-01"),
+               pr(9, "CLOSED", "explanations/L2/L2-N9.yaml"),
+               pr(10, "MERGED", "requests/L2-N9-001.yaml", merged="2026-11-02")]
+        fake = FakeGit(prs)  # no PR found for the commit: fall back to the merged PR that added the file
+        self.publish.publish([self.rec("L2-N9-001")], fake)
+        self.assertEqual([c[3] for c in fake.of("gh", "pr", "comment")], ["10", "8"])
+
+    def test_one_failure_does_not_stop_the_rest(self):
+        fake = FakeGit([], fail_push=["results-L0-N1-001"])
+        urls, failures = self.publish.publish([self.rec("L0-N1-001"), self.rec("L0-N1-002")], fake)
+        self.assertEqual(list(urls), ["L0-N1-002"])
+        self.assertEqual(len(failures), 1)
+        self.assertIn("push rejected", failures[0])
+        self.assertEqual(len(fake.of("git", "checkout", "-q", "-f")), 2)
+
+    def test_written_file_is_the_record(self):
+        fake = FakeGit([])
+        self.publish.publish([self.rec("L0-N1-001")], fake)
+        written = yaml.safe_load((Path(self.tmp.name) / "results" / "L0-N1-001.yaml").read_text())
+        self.assertEqual((written["request"], written["outcome"]), ("L0-N1-001", "refuted"))
+
+
+class TestPickRerun(unittest.TestCase):
+    def test_rerun_includes_a_request_with_a_result(self):
+        import tempfile
+        with tempfile.TemporaryDirectory() as d:
+            for sub in ("requests", "results"):
+                (Path(d) / sub).mkdir()
+            (Path(d) / "requests" / "L0-N1-001.yaml").write_text(yaml.safe_dump(act_req()))
+            (Path(d) / "results" / "L0-N1-001.yaml").write_text("request: L0-N1-001\n")
+            old_root, old_first = pick.ROOT, pick.first_added
+            pick.ROOT, pick.first_added = Path(d), lambda path: (0, "")
+            try:
+                self.assertEqual(pick.pending(), [])
+                self.assertEqual([p.id for p in pick.pending(rerun={"L0-N1-001"})], ["L0-N1-001"])
+            finally:
+                pick.ROOT, pick.first_added = old_root, old_first
+
+
 if __name__ == "__main__":
     unittest.main()

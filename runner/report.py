@@ -45,8 +45,11 @@ def fmt(v):
     return f"{v:.4g}" if isinstance(v, float) else str(v)
 
 
-def comment(rec):
+def comment(rec, results_pr=None):
+    """The summary: the body of the results PR (results_pr=None), or the comment on the request's PR."""
     lines = [f"## Experiment result: `{rec['request']}` → **{rec['outcome']}**", ""]
+    if results_pr:
+        lines += [f"Results PR: {results_pr}", ""]
     if rec.get("reason"):
         lines += [f"Reason: {rec['reason']}", ""]
     if rec["summary"]:
@@ -62,7 +65,8 @@ def comment(rec):
             lines.append("| " + " | ".join(f"`{c}`" if k in ("prompt", "high", "low", "token") else c
                                            for k, c in zip(keys, cells)) + " |")
         lines += ["", "</details>", ""]
+    where = f"in {results_pr}" if results_pr else "in this PR"
     lines.append(f"Model `{rec['model']}` (bf16) on {rec['gpu']}, runner `{rec['runner_commit'][:7]}`, request "
                  f"`{rec['request_commit'][:7]}`, {rec['date']}. Full numbers: `results/{rec['request']}.yaml` "
-                 "in the results PR.")
+                 f"{where}.")
     return "\n".join(lines)

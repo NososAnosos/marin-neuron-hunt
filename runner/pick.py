@@ -48,8 +48,9 @@ def est_seconds(req):
     return passes(req) * S_PER_PASS
 
 
-def pending(exclude=()):
-    done = {p.stem for p in (ROOT / "results").glob("*.yaml")}
+def pending(exclude=(), rerun=()):
+    """Requests with no result yet, plus any in `rerun` (whose result a new results PR will replace)."""
+    done = {p.stem for p in (ROOT / "results").glob("*.yaml")} - set(rerun)
     out = []
     for path in sorted((ROOT / "requests").glob("*.yaml")):
         if path.stem in done or path.stem in exclude:
