@@ -86,6 +86,17 @@ To run it:
 A request PR without the line gets a warning in CI and a note on the Station House platform. Both
 are notes, not blocks.
 
+## After your request runs
+
+- Your request runs once it is merged to `main`. If your explanation needs more review, a maintainer
+  may merge the request files on their own first; you keep the credit.
+- Each result arrives as **its own results PR**, `Results <request id>: <outcome>`, which commits
+  `results/<request id>.yaml`. You get a comment on your request PR linking to it.
+- Don't add or edit files in `results/` yourself. Questions about a result go on its results PR.
+- When the results PR merges, update the side's `verification` in your explanation and cite the
+  results PR. If the result is `refuted`, revise the explanation to fit the numbers or set the side to
+  `unclear`; a follow-up request (`-002`, …) is welcome.
+
 ## Tools
 
 ```bash
