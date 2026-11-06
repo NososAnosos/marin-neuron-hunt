@@ -1,0 +1,132 @@
+request: L0-N10657-002
+type: activation-test
+outcome: refuted
+reason: null
+summary:
+  threshold: 0.75
+  should_fire_above: 1.0
+  should_not_fire_below: 0.5833333333333334
+  auroc: 0.9166666666666666
+  should_fire_mean: 0.8811848958333334
+  should_not_fire_mean: 0.6687825520833334
+per_prompt:
+- group: should_fire
+  prompt: The gallery displayed a striking[[ image]] of the harbor at dawn.
+  token: Ġimage
+  act: 0.78125
+- group: should_fire
+  prompt: The proof shows the set must be[[ finite]] under these assumptions.
+  token: Ġfinite
+  act: 1.015625
+- group: should_fire
+  prompt: Almost every household now owns some[[ digital]] device.
+  token: Ġdigital
+  act: 0.9375
+- group: should_fire
+  prompt: New tools can[[ transform]] how small farms are run.
+  token: Ġtransform
+  act: 0.890625
+- group: should_fire
+  prompt: The architects kept the interior bright and[[ modern]] throughout.
+  token: Ġmodern
+  act: 0.96484375
+- group: should_fire
+  prompt: The recipe is[[ simple]] enough for a weeknight dinner.
+  token: Ġsimple
+  act: 0.94140625
+- group: should_fire
+  prompt: Good maps[[ rely]] on accurate survey data.
+  token: Ġrely
+  act: 0.93359375
+- group: should_fire
+  prompt: The committee praised the[[ innovative]] drainage design.
+  token: Ġinnovative
+  act: 0.87109375
+- group: should_fire
+  prompt: Topspin makes the ball[[ spin]] forward after it bounces.
+  token: Ġspin
+  act: 0.87890625
+- group: should_fire
+  prompt: They learned to[[ use]] the loom from their grandmother.
+  token: Ġuse
+  act: 0.796875
+- group: should_fire
+  prompt: The whole[[ real]] cost only emerged after the audit.
+  token: Ġreal
+  act: 0.79296875
+- group: should_fire
+  prompt: Her[[ entire]] approach to teaching changed that year.
+  token: Ġentire
+  act: 0.76953125
+- group: should_not_fire
+  prompt: The gallery displayed a striking[[ Image]] of the harbor at dawn.
+  token: ĠImage
+  act: 0.60546875
+- group: should_not_fire
+  prompt: The architects kept the interior bright and[[ Modern]] throughout.
+  token: ĠModern
+  act: 0.8046875
+- group: should_not_fire
+  prompt: The recipe is[[ Simple]] enough for a weeknight dinner.
+  token: ĠSimple
+  act: 0.8203125
+- group: should_not_fire
+  prompt: New tools can[[ Transform]] how small farms are run.
+  token: ĠTransform
+  act: 0.71875
+- group: should_not_fire
+  prompt: Almost every household now owns some[[ Digital]] device.
+  token: ĠDigital
+  act: 0.7890625
+- group: should_not_fire
+  prompt: They learned to[[ Use]] the loom from their grandmother.
+  token: ĠUse
+  act: 0.7578125
+- group: should_not_fire
+  prompt: The sign over the stall read[[ IMAGE]] in dripping paint.
+  token: ĠIMAGE
+  act: 0.5625
+- group: should_not_fire
+  prompt: The debugger printed the word[[ SIMPLE]] before crashing.
+  token: ĠSIMPLE
+  act: 0.6328125
+- group: should_not_fire
+  prompt: The village pub felt[[ quaint]] after a week of cities.
+  token: Ġquaint
+  act: 0.66796875
+- group: should_not_fire
+  prompt: The lake was[[ serene]] at first light, without a ripple.
+  token: Ġserene
+  act: 0.78515625
+- group: should_not_fire
+  prompt: The byline read[[ Tribune]] and the date was 1934.
+  token: ĠTribune
+  act: 0.46484375
+- group: should_not_fire
+  prompt: The deed listed[[ County]] as the filing authority.
+  token: ĠCounty
+  act: 0.416015625
+model: marin-community/marin-32b-base@f19b346615212ff9a6d92c10861a9cdb100cbf97
+runner_commit: 3968a01886e7528266edf578e4e14bda29afeaef
+request_commit: 1447456666073fd1702549cdc90625d4999860df
+gpu: NVIDIA H200
+date: '2026-11-06'
+seconds: 2.1
+atlas_stats:
+  n: 9995501.0
+  mean: 0.7744210362434387
+  std: 0.11806967109441757
+  frac_pos: 0.9999516606330872
+  max: 1.09375
+  min: -0.333984375
+  scale_abs_p999: 1.0649856328964233
+  pos_q5: 0.8353625535964966
+  pos_q9: 0.982171893119812
+  pos_q99: 0.982171893119812
+  pos_q999: 1.0649856328964233
+  pos_q9999: 1.0649856328964233
+  neg_q5: 0.04531583562493324
+  neg_q9: 0.16548171639442444
+  neg_q99: 0.2689598798751831
+  neg_q999: 0.342891126871109
+  neg_q9999: 0.342891126871109
