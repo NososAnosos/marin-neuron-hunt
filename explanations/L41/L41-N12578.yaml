@@ -1,0 +1,41 @@
+neuron: L41-N12578
+data: pilot/fineweb-10m-sparse
+label: "anticipates 'the other' around the word 'the'"
+positive:
+  status: explained
+  confidence: weak
+  cue_type: next-token
+  explanation: >-
+    Fires on the word just before "the other" in contrasts such as "one or the other", "in one hand ... in the
+    other" and "on the other hand", and its output pushes " the" (logit lens top: "the" in several forms).
+    61% of its 434 strong firings come right before "the other(s)", against 11 strong firings before the
+    358,990 "the" not followed by other/others/next/last/first/rest-type words; but only half of all 1,888
+    "X the other" pass the threshold and 14% fire strongly, so the cue is specific but not reliable.
+  fires_on: "the token right before 'the other' (or 'the others', 'the second'), e.g. 'one or the other', 'on the other hand'"
+  not_on: >-
+    the token before 'the' in general (0% of 358,990 cases past the threshold in the sparse tier). Sparse tier
+    only: the deep tier contains no 'the other(s)', so this is untested.
+  evidence: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17]
+  verification: untested
+negative:
+  status: explained
+  confidence: weak
+  cue_type: next-token
+  explanation: >-
+    Fires on "the" when it picks one member out of a set relative to the rest: "the others", "the other two",
+    "the next", "the last", "the rest", "the latter"; its output pushes " another", " others", " other".
+    About two thirds of its 280 strong firings come right before such a word (mostly on "the", a few on "each"
+    in "each other"), but the side is weak (peak -37) and fires past the threshold on only 50% of "the others"
+    and 22% of "the other".
+  fires_on: "'the' before 'others' / 'other' / 'next' / 'last' / 'rest' / 'latter', e.g. 'than the others', 'the other two'"
+  not_on: >-
+    'the' before any other word (1% of 358,990 cases past the threshold in the sparse tier). Sparse tier only:
+    the deep tier contains no 'the other(s)', so this is untested.
+  evidence: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13, 15, 16, 17, 19]
+  verification: untested
+relation: variant
+relation_note: >-
+  Both sides work on the same 'X the other(s)' phrase at neighbouring tokens: the positive side on the word
+  before 'the' (pushing 'the'), the negative side on 'the' itself (pushing 'other', 'others', 'another').
+by:
+  - {github: Parva-26, method: agent, model: claude-opus-5-5}
