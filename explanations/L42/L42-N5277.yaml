@@ -1,0 +1,37 @@
+neuron: L42-N5277
+data: pilot/fineweb-10m-sparse
+label: "fringe-belief talk; expects conspiracy, anti-, fringe"
+positive:
+  status: explained
+  confidence: weak
+  cue_type: semantic-topic
+  explanation: >-
+    Fires in text that talks about people or ideas as fringe, denialist or extremist: conspiracy theories and
+    theorists, 9/11 Trutherism, vaccine refusers, climate change denial, Holocaust denial, far-right and
+    anti-government extremists. It often fires on the word just before the label (an opening quote before
+    "negationists", "far" before "-proper extremist", "robust" before "far-right"), and the logit lens pushes
+    " conspiracy", " Conspiracy", " conspir", " anti", " paranoid" and " fringe", so part of its job looks like
+    expecting such a label. It is not just the word: " vaccine" is strongest on "vaccine refusers" and is absent
+    from the stored firings in most medical uses. Below an activation of about 10 the firings are diffuse and
+    only lean towards political opinion text.
+  fires_on: "'conspiracy theories/theorist', 'vaccine refusers', 'climate change denial', 'Holocaust denier', 'far-right' or 'anti-government' extremists, and the word just before such labels"
+  not_on: "' conspiracy' as a legal charge or in 'criminal conspiracy' and medical ' vaccine' are missing from the stored firings, but the sparse tier keeps only each token's top 64 neurons, so non-firing is untested"
+  evidence: [0, 1, 2, 3, 4, 5, 7, 8, 12, 14, 15, 16, 17, 19, 20, 23, 25, 26, 28, 29]
+  verification: untested
+negative:
+  status: unclear
+  cue_type: mixed
+  explanation: >-
+    Much weaker (min -12.9 against max +60.1) and with no single job found. The strongest firings mix opening
+    quotes after reporting verbs, list markers and commas in website terms ("(a)", "obscene, pornographic"), poll
+    percentages, and forum timestamps. The logit lens for this side has no theme.
+  fires_on: "quote openers after 'say that', legal list markers, poll percentages, forum timestamps; no common thread found"
+  not_on: "untested"
+  evidence: [0, 1, 2, 3, 7, 8, 9, 12, 14, 15, 17, 22, 26, 30]
+  verification: untested
+relation: lumped
+relation_note: >-
+  The positive side has one readable topic, while the much weaker negative side looks like several unrelated
+  patterns, none linked to fringe-belief talk.
+by:
+  - {github: gowrish-kumar-61, method: agent, model: claude-opus-5-5}
