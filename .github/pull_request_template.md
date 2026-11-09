@@ -3,6 +3,12 @@
 <!-- e.g. L40-N25546. List every neuron whose explanation this PR changes. Claim them on Station House first
 (the project's Neurons tab); a PR on an unclaimed neuron claims it for you. CI fails if someone else holds one. -->
 
+## In plain English
+
+<!-- Required for any PR that adds or changes an explanation; CI fails without it. In a sentence or two per
+neuron, say what you believe it does, for someone who hasn't read the YAML: no field names, no statistics.
+Cover both sides, and say plainly when a side is unclear. With several neurons, start each with its id. -->
+
 ## What's in this PR
 
 - [ ] An explanation: `explanations/L<layer>/L<layer>-N<neuron>.yaml`, covering **both sides**

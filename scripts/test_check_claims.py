@@ -6,7 +6,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from check_claims import explained_neuron, neurons_in_pr, problems  # noqa: E402
+from check_claims import explained_neuron, neurons_in_pr, plain_english_problems, problems  # noqa: E402
 
 TEMPLATE = """## Neuron(s)
 
@@ -30,6 +30,41 @@ class NeuronsInPr(unittest.TestCase):
     def test_missing_body_and_out_of_range(self):
         self.assertEqual(neurons_in_pr("L3-N4: both sides", None), ["L3-N4"])
         self.assertEqual(neurons_in_pr("L99-N1", None), [])
+
+
+PLAIN = """## Neuron(s)
+
+L40-N1
+
+## In plain English
+
+<!-- In a sentence or two per neuron, say what you believe it does. -->
+{section}
+
+## What's in this PR
+"""
+
+
+class PlainEnglish(unittest.TestCase):
+    one = "It lights up on the word right before a list starts. The negative side is unclear."
+
+    def test_missing_empty_or_comment_only_fails(self):
+        self.assertEqual(len(plain_english_problems(["L40-N1"], TEMPLATE.format(section="L40-N1"))), 1)
+        self.assertEqual(len(plain_english_problems(["L40-N1"], PLAIN.format(section=""))), 1)
+        self.assertEqual(len(plain_english_problems(["L40-N1"], None)), 1)
+
+    def test_too_short_fails(self):
+        self.assertEqual(len(plain_english_problems(["L40-N1"], PLAIN.format(section="Fires on lists."))), 1)
+
+    def test_one_neuron_needs_no_id(self):
+        self.assertEqual(plain_english_problems(["L40-N1"], PLAIN.format(section=self.one)), [])
+
+    def test_several_neurons_each_named(self):
+        both = f"L40-N1: {self.one}\nL40-N2: {self.one}"
+        self.assertEqual(plain_english_problems(["L40-N1", "L40-N2"], PLAIN.format(section=both)), [])
+        errors = plain_english_problems(["L40-N1", "L40-N2"], PLAIN.format(section=f"L40-N1: {self.one} {self.one}"))
+        self.assertEqual(len(errors), 1)
+        self.assertIn("L40-N2", errors[0])
 
 
 class ExplainedNeuron(unittest.TestCase):

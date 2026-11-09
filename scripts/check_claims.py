@@ -2,7 +2,8 @@
 
 Fails when the PR changes the explanation of a neuron someone else holds, or changes an explanation
 without naming its neuron in the PR title or the "## Neuron(s)" section (that list is how Station
-House links the PR to the claim). Runs in CI on pull requests:
+House links the PR to the claim), or without saying what the neuron does under "## In plain English".
+Runs in CI on pull requests:
 
   PR_TITLE, PR_BODY, PR_AUTHOR_ID, BASE_SHA  set by .github/workflows/validate.yml
   CLAIMS_URL                                 optional, defaults to Station House's public claims map
@@ -23,6 +24,8 @@ NEURONS_PER_LAYER = 27648
 ID_IN_TEXT = re.compile(r"\bL(\d{1,2})-N(\d{1,5})\b", re.IGNORECASE)
 EXPLANATION_PATH = re.compile(r"^explanations/L\d{1,2}/(L\d{1,2}-N\d{1,5})\.ya?ml$")
 SECTION = re.compile(r"^##\s*Neurons?(?:\(s\))?\s*$(.*?)(?=^##\s|\Z)", re.IGNORECASE | re.MULTILINE | re.DOTALL)
+PLAIN_SECTION = re.compile(r"^##\s*In plain English\s*$(.*?)(?=^##\s|\Z)", re.IGNORECASE | re.MULTILINE | re.DOTALL)
+PLAIN_MIN_WORDS = 10
 
 
 def canonical(layer, neuron):
@@ -47,6 +50,25 @@ def neurons_in_pr(title, body):
     match = SECTION.search(text)
     found = ids_in(title or "") + ids_in(match.group(1) if match else "")
     return list(dict.fromkeys(found))
+
+
+def plain_english_problems(touched, body):
+    """The error lines if the PR doesn't say, in its own words, what each touched neuron does."""
+    match = PLAIN_SECTION.search(re.sub(r"<!--.*?-->", "", body or "", flags=re.DOTALL))
+    text = match.group(1).strip() if match else ""
+    if len(text.split()) < PLAIN_MIN_WORDS * len(touched):
+        return [
+            "Say what you believe the neuron does under '## In plain English' in the PR description: a sentence or "
+            f"two per neuron, both sides (at least {PLAIN_MIN_WORDS} words each)."
+        ]
+    named = set(ids_in(text))
+    if len(touched) > 1:
+        return [
+            f"{neuron_id}: name it under '## In plain English' with what you believe it does."
+            for neuron_id in touched
+            if neuron_id not in named
+        ]
+    return []
 
 
 def explained_neuron(path):
@@ -97,12 +119,13 @@ def main():
         print("check_claims: no explanation files changed.")
         return 0
     declared = neurons_in_pr(os.environ.get("PR_TITLE"), os.environ.get("PR_BODY"))
+    plain = plain_english_problems(touched, os.environ.get("PR_BODY"))
     try:
         claims = fetch_claims(os.environ.get("CLAIMS_URL") or CLAIMS_URL)
     except Exception as err:  # Station House down: don't block the PR on it.
         print(f"::warning::Couldn't read Station House's neuron claims ({err}); claim check skipped.")
         claims = {}
-    errors = problems(touched, declared, claims, os.environ.get("PR_AUTHOR_ID"))
+    errors = problems(touched, declared, claims, os.environ.get("PR_AUTHOR_ID")) + plain
     for message in errors:
         print(f"::error::{message}")
     for neuron_id in touched:
