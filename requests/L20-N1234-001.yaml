@@ -1,0 +1,36 @@
+type: activation-test
+neuron: L20-N1234
+side: "+"
+hypothesis: >-
+  The positive side exceeds its atlas 99th percentile (pos_q99 = 0.2480, fineweb-10m-sparse) on soft or
+  minced exclamatives (God in "my God", heck/Heck, darn, goodness in "for goodness sake"/"my goodness")
+  used as exclamations, and stays below it on the same words used literally: God in theological
+  prose, darn as sock mending, goodness as a noun for virtue/quality, and Heck as a surname.
+should_fire:
+  - "We waited two hours for the plumber and, oh my[[ God]], he brought the wrong part."
+  - "My[[ God]], the traffic on the bridge is unbearable tonight."
+  - "The cake collapsed in the oven.[[ Heck]], at least the frosting tastes fine."
+  - "Nobody showed up to the meeting.[[ Heck]], I almost skipped it myself."
+  - "What the[[ heck]] is that noise coming from the attic?"
+  - "I dropped my keys in the lake,[[ darn]] it."
+  - "That[[ darn]] printer jammed again right before the deadline."
+  - "Will you please, for[[ goodness]] sake, close the gate behind you?"
+  - "Oh my[[ goodness]], look at the size of that pumpkin!"
+  - "Well,[[ heck]], I never expected a party for my birthday."
+  - "Oh[[ God]], I left the stove on when we left the house."
+  - "The referee missed the call again, and the coach yelled, oh for[[ goodness]] sake."
+should_not_fire:
+  - "The theologian argued that[[ God]] is beyond complete human understanding."
+  - "In the creed, believers affirm that[[ God]] made heaven and earth."
+  - "The cathedral inscription honors[[ God]] and the city founders."
+  - "Her grandmother taught her to[[ darn]] wool socks by the fire."
+  - "He used a wooden egg to[[ darn]] the hole in his sweater."
+  - "A good sweater is worth the time it takes to[[ darn]] it carefully."
+  - "Farmers praised the[[ goodness]] of the rich valley soil."
+  - "The philosopher wrote about the quiet[[ goodness]] of ordinary people."
+  - "The recipe preserves the natural[[ goodness]] of ripe tomatoes."
+  - "The engineer, Dr.[[ Heck]], presented the bridge survey results."
+  - "The parish register lists Johann[[ Heck]] as a miller in 1790."
+  - "The court ruled against[[ Heck]] in the 1994 appeal."
+threshold: atlas-q99
+by: {github: NososAnosos, method: agent, model: grok-bot}

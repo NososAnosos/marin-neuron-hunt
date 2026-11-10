@@ -1,0 +1,69 @@
+# Design: requests/L20-N1234-003/DESIGN.md
+type: custom
+neurons: [L20-N1234]
+title: "Strong vs soft exclamations in matched frames: parallel shapes or minced-oath-specific? (L20-N1234+)"
+procedure: |
+  Model marin-community/marin-32b-base @ f19b3466, bf16. Activation = silu(gate) * up of L20-N1234 at the
+  [[ ]]-marked target token (every target is one Marin token). One forward pass per prompt, no steering.
+  Threshold T = pos_q99 of L20-N1234 from pilot/fineweb-10m-sparse/summaries/pole_stats.parquet (0.2480).
+
+  12 frames. Each frame has three arms that differ only in the marked token (and, in frame 3, the
+  word before it): S = strong profanity, M = its minced/soft counterpart, N = neutral filler in the same slot.
+
+   1 S: "What the[[ fuck]] is that noise in the attic?"
+     M: "What the[[ heck]] is that noise in the attic?"
+     N: "What the[[ children]] heard in the attic was a mouse."
+   2 S: "Where the[[ hell]] did I leave my car keys?"
+     M: "Where the[[ heck]] did I leave my car keys?"
+     N: "Where the[[ river]] bends, I left my car keys."
+   3 S: "God[[ damn]] it, the printer jammed again."
+     M: "Gosh[[ darn]] it, the printer jammed again."
+     N: "Gord[[ fixed]] it, and the printer works again."
+   4 S: "That[[ damn]] dog dug up the garden again."
+     M: "That[[ darn]] dog dug up the garden again."
+     N: "That[[ brown]] dog dug up the garden again."
+   5 S: "Oh my[[ God]], look at the size of that pumpkin!"
+     M: "Oh my[[ goodness]], look at the size of that pumpkin!"
+     N: "Oh, my[[ neighbor]] grew the biggest pumpkin on the street!"
+   6 S: "Hammers, saws, drills, you[[ fucking]] name it, the shop sells them all."
+     M: "Hammers, saws, drills, you[[ freaking]] name it, the shop sells them all."
+     N: "Hammers, saws, drills: you[[ will]] find them all at the shop."
+   7 S: "Oh[[ shit]], I left the stove on when we left the house."
+     M: "Oh[[ shoot]], I left the stove on when we left the house."
+     N: "Oh[[ Sam]], I left the stove on when we left the house."
+   8 S: "Holy[[ shit]], the river flooded the whole parking lot."
+     M: "Holy[[ cow]], the river flooded the whole parking lot."
+     N: "Holy[[ water]] was sprinkled over the crowd at the parade."
+   9 S: "This[[ fucking]] traffic is going to make me late again."
+     M: "This[[ flipping]] traffic is going to make me late again."
+     N: "This[[ morning]] traffic is going to make me late again."
+  10 S: "The ref blew the call again,[[ damn]] it."
+     M: "The ref blew the call again,[[ dang]] it."
+     N: "The ref blew the call again,[[ and]] the fans booed."
+  11 S: "I was so[[ fucking]] tired after the double shift."
+     M: "I was so[[ freaking]] tired after the double shift."
+     N: "I was so[[ tired]] after the double shift."
+  12 S: "Shut the[[ hell]] up, yelled the cranky neighbor."
+     M: "Shut the[[ heck]] up, yelled the cranky neighbor."
+     N: "Shut the[[ door]], yelled the cranky neighbor."
+
+  Record act for all 36 prompts. For each frame compute r = max(S, T/4) / max(M, T/4) (floor avoids
+  dividing by near-zero). Repeat the whole computation for 100 random L20 neurons (fixed seed 0), each
+  with its own pos_q99, as the random-neuron baseline.
+prediction: >-
+  Parallel shapes (Kristopher's hypothesis): L20-N1234+ fires above T on both strong and minced forms, at
+  comparable strength (geometric-mean S/M ratio between 0.5 and 2), and stays below T on neutral fillers in
+  the same frames.
+pass_rule: >-
+  Confirmed if all hold: (a) M > T in at least 10/12 frames; (b) S > T in at least 10/12 frames; (c) N > T
+  in at most 2/12 frames; (d) geometric mean of r over the 12 frames is in [0.5, 2] and at least 8/12 frames
+  have r in [0.5, 2]; (e) fewer than 5 of the 100 random L20 neurons meet (a), (b) and (c) with their own
+  pos_q99.
+refuted_if: >-
+  Refuted (minced-oath-specific reading wins) if (a) and (c) hold but S > T in fewer than 6/12 frames or the
+  geometric-mean r is below 0.5. Refuted the other way (general-profanity neuron, soft forms a weak echo) if
+  (a)-(c) hold and the geometric-mean r is above 2. Inconclusive if (a) or (c) fails (the side does not fire
+  as described on fresh prompts, so the comparison means nothing) or (e) fails.
+compute: "36 forward passes of under 20 tokens each (plus the same passes read for 100 random neurons; no extra passes)"
+outputs: "act per prompt for L20-N1234 (both sides) and the 100 random neurons, per-frame r, the five rule checks, the outcome"
+by: {github: NososAnosos, method: agent, model: grok-bot}

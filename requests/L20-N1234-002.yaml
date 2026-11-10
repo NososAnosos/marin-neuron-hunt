@@ -1,0 +1,15 @@
+type: contrast
+neuron: L20-N1234
+side: "+"
+pairs:
+  - {high: "Hammers, saws, drills, you[[ name]] it, the shop sells them all.", low: "At the ceremony, you[[ name]] the ship before it launches."}
+  - {high: "Jazz, folk, metal, you[[ name]] it, she has played it on stage.", low: "When the puppy arrives, you[[ name]] it whatever you like."}
+  - {high: "Floods, fires, droughts, you[[ name]] it, the town has survived it.", low: "On the form, you[[ name]] it after the street you live on."}
+  - {high: "Tacos, curry, sushi, you[[ name]] it, the food court has it.", low: "In the final round, you[[ name]] the capital of each country."}
+  - {high: "Late trains, lost bags, rude staff, you[[ name]] it, we had it all.", low: "If you find a new star, you[[ name]] it in the official catalog."}
+  - {high: "Chess, poker, darts, you[[ name]] it, my uncle wins at it.", low: "First you plant the tree, then you[[ name]] it for your grandmother."}
+  - {high: "Taxes, permits, inspections, you[[ name]] it, the office handles it.", low: "In this game, you[[ name]] an animal for every letter."}
+  - {high: "Rust, mold, termites, you[[ name]] it, the old barn had it.", low: "When you sign the lease, you[[ name]] a second tenant."}
+  - {high: "Python, Rust, Go, you[[ name]] it, the team writes it.", low: "In the script, you[[ name]] the file before saving it."}
+  - {high: "Snow, hail, sleet, you[[ name]] it, the pass gets it every winter.", low: "At the end of the quiz, you[[ name]] your favorite planet."}
+by: {github: NososAnosos, method: agent, model: grok-bot}

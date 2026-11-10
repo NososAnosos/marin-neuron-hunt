@@ -1,0 +1,39 @@
+neuron: L20-N1234
+data: pilot/fineweb-1m
+label: "soft exclamatives / emphatic discourse (mixed)"
+positive:
+  status: explained
+  confidence: weak
+  cue_type: mixed
+  explanation: >-
+    Strongest firings cluster on soft or minced colloquial exclamatives and related fragments:
+    "My God", "Heck"/"heck", "darn"/"Darn"/"darned", "for goodness sakes", "Gawd", "Gads".
+    A second, weaker cluster is discourse intensifiers ("certainly", "indeed", "even", "sure").
+    A third clear job is the list-exhaustion idiom "you name it" (three of the top-16 positive
+    exemplars). Rank 0 is a false friend: subword "ea" inside "yea" (birds). Treat as lumped.
+  fires_on: >-
+    soft/minced exclamatives (My God, Heck, darn, goodness sakes, Gawd/Gads) and, separately,
+    "you name it" plus intensifiers like certainly/indeed
+  not_on: >-
+    ordinary non-exclamative "God" in theological prose, and non-idiomatic "name" (untested
+    outside atlas exemplars; needs a contrast/activation request). Negative-side contexts show
+    no matching oath cluster (0/25 keyword windows).
+  evidence: [2, 4, 5, 6, 7, 8, 9, 10, 11, 14, 19, 20]
+  verification: untested
+negative:
+  status: unclear
+  cue_type: none
+  explanation: >-
+    Much weaker than the positive side (min about -1.60 vs max about +3.88 on fineweb-1m).
+    Top negative exemplars are mixed web prose (casino copy, New Yorker, tired of..., Experts)
+    with no shared cue; keyword search for the positive oath family hits 0/25 windows.
+  fires_on: "no clear pattern in top exemplars"
+  not_on: "untested"
+  evidence: [0, 1, 2, 6, 7, 12]
+  verification: untested
+relation: lumped
+relation_note: >-
+  The positive side appears to do at least two jobs (minced/soft exclamatives vs "you name it"
+  and discourse intensifiers); the negative side has no clear job of its own on this corpus.
+by:
+  - {github: NososAnosos, method: agent, model: grok-bot}
