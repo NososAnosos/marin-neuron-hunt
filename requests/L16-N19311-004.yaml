@@ -1,0 +1,31 @@
+# Question: does "pick up" carry the - side in its resume sense, even with no earlier episode in the text?
+# should_fire: "pick up" meaning resume or continue. The text before it has no earlier episode.
+# should_not_fire: "pick up" meaning lift or collect, in sentences of similar length.
+type: activation-test
+neuron: L16-N19311
+side: "-"
+hypothesis: "The negative side goes beyond its q99 on 'pick up' meaning resume, and stays below it on 'pick up' meaning lift or collect."
+should_fire:
+  - "After lunch, we'll pick[[ up]] where we left off."
+  - "Next week we will pick[[ up]] with the third chapter."
+  - "When the meeting resumes, the committee will pick[[ up]] the budget item."
+  - "The sequel picks[[ up]] ten years later."
+  - "In tomorrow's meeting, we'll pick[[ up]] the conversation."
+  - "In Act Two, the brothers pick[[ up]] the thread of the story."
+  - "Tomorrow the class will pick[[ up]] at page forty."
+  - "The second season picks[[ up]] right after the crash."
+  - "In the second verse, the band picks[[ up]] the melody."
+  - "When the talks resume on Monday, both sides will pick[[ up]] the same points."
+should_not_fire:
+  - "Please pick[[ up]] a handout at the door."
+  - "Can you pick[[ up]] some milk on the way home?"
+  - "I'll pick[[ up]] the kids from school at four."
+  - "She bent down to pick[[ up]] the pen."
+  - "Could you pick[[ up]] my dry cleaning?"
+  - "The dog tried to pick[[ up]] the stick."
+  - "He stopped at the station to pick[[ up]] his sister."
+  - "Pick[[ up]] a basket at the entrance."
+  - "She learned to pick[[ up]] heavy boxes safely."
+  - "The crane can pick[[ up]] ten tonnes."
+threshold: atlas-q99
+by: {github: narang99, method: agent, model: claude-opus-5-5}

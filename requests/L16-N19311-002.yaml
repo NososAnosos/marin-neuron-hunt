@@ -1,0 +1,29 @@
+type: activation-test
+neuron: L16-N19311
+side: "-"
+hypothesis: "The neuron fires (> q99) in the negative side when we talk about an earlier episode. Words like `more` which also occur on the positive side turn the neuron negative if they are talking about adding something to an earlier episode"
+should_fire:
+  - "Another letter arrived from the council, this[[ time]] about parking."
+  - "In 1972, a second bridge was built, this[[ time]] in steel."
+  - "Second half: same[[ as]] the first, with the visitors pressing high."
+  - "Kitchen Tips, Part III\nToday we[[ continue]] with knife skills."
+  - "Kitchen Tips\nToday we[[ continue]] with knife skills."
+  - "After a short recess, the witness returned to[[ continue]] her account."
+  - "Back on the farm, we had[[ more]] chores."
+  - "For weeks we have been reading Genesis, and on Sunday we'll go back and pick[[ up]] with chapter 12."
+  - "We stayed in Rome last spring. This spring we went back for a few[[ more]] days."
+  - "The rash lasted a week. After a short break, it came back for two[[ more]] weeks."
+  - "I ate at this cafe yesterday. Today I came back and ordered[[ another]] sandwich."
+should_not_fire:
+  - "The first letter arrived from the council, this[[ time]] about parking."
+  - "Opening half: same[[ as]] expected, with the visitors pressing high."
+  - "In 1972, a bridge was built, this[[ time]] in steel."
+  - "On the farm, we had[[ more]] chores."
+  - "The rash lasted a week, and it went on for two[[ more]] weeks."
+  - "We liked Rome, so we stayed a few[[ more]] days."
+  - "The sandwich was good, so I ordered[[ another]] one."
+  - "He rang the bell, waited a moment, and rang[[ again]]."
+  - "He rang the bell last Monday. Today he came back and rang[[ again]]."
+  - "The[[ witness]] took the stand to continue her account."
+threshold: atlas-q99
+by: {github: narang99, method: agent, model: claude-opus-5-5}
