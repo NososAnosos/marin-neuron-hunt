@@ -6,7 +6,7 @@ procedure: |
   Model marin-community/marin-32b-base @ f19b3466, bf16. Activation = silu(gate) * up. One forward pass per
   prompt, no steering, no ablation. Prompts are in requests/L62-N24835-001/prompts.json (182 activation
   prompts, every [[ ]] target checked as one Marin token, longest prompt 48 tokens with BOS; the same
-  file also gives 33 naming contexts for positive control P2).
+  file also gives 39 naming contexts for positive control P2).
 
   Arms:
     scene (120): 10 animals x 3 descriptions x 4 shared endings. The description never names the animal
@@ -23,9 +23,9 @@ procedure: |
   Animals: capybara, guinea pig, beaver, nutria, mara, tapir, hippo, otter, wombat, dog.
 
   Naming contexts (for P2, not activation prompts): prompts.json's "naming" section gives the 30 exact
-    scene-description stems, 3 neutral contexts, the frame " The animal is:", and the 10 candidate
-    names. For every one of the 33 contexts and every candidate, record the summed log probability of
-    " " + the candidate's full name as the continuation after context + frame (330 scores). Also record
+    scene-description stems, 9 neutral contexts, the frame " The animal is:", and the 10 candidate
+    names. For every one of the 39 contexts and every candidate, record the summed log probability of
+    " " + the candidate's full name as the continuation after context + frame (390 scores). Also record
     the raw log probability; the pass metric uses prior-corrected lift, defined below.
 
   Record, for every prompt, at the target token and at the token after it (both sites, as in
@@ -54,10 +54,11 @@ procedure: |
       shuffles within folds) with the observed held-out margin's position in it. If the reduced
       readout passes every P1 bar, P1 is scored by the reduced readout.
     P2 prior-corrected naming: for candidate a and context d, lift(a, d) = log P(a | d) minus the mean
-      log P(a | neutral context) over the 3 neutral contexts. The same full name is used in both terms,
+      log P(a | neutral context) over the 9 neutral contexts. The same full name is used in both terms,
       so the candidate's baseline frequency and token length under the naming frame are subtracted.
-      Report raw log probabilities, the full lift matrix, and each true candidate's lift rank.
-  Run order: stage 1 (pilot) runs the 120 scene passes and the 330 naming scores and scores P1
+      Report raw log probabilities, the full lift matrix, each true candidate's lift rank, and for
+      every candidate the range and SD of its log probability across the 9 neutral contexts.
+  Run order: stage 1 (pilot) runs the 120 scene passes and the 390 naming scores and scores P1
     (including its failure protocol) and P2 before any candidate is scored. Stage 2 runs the remaining
     62 passes (word, ruby, unrelated) and all candidate scoring, and runs only if at least one control
     passes. If both controls fail, stop after the pilot and report the pilot result.
@@ -93,8 +94,10 @@ pass_rule: >-
   at least 1.0, capybara wins at least 10 of 12 matched slots, and the breadth check passes for every
   held-out description, with P1 scored by the pre-registered reduced 61-side readout if the full
   readout fails and the reduced readout passes every P1 bar; (P2) capybara's mean naming lift on
-  its own contexts is above 0, ranks first among the 10 candidates in at least 2 of its 3 contexts, and
-  exceeds capybara's mean lift on the 27 rival contexts. P1 and P2 are refutation gates, not extra
+  its own contexts is above 0, it scores a clear win in at least 2 of its 3 contexts (ranks first and
+  beats the runner-up's lift by more than capybara's neutral-context SD), and it exceeds capybara's
+  mean lift on the 27 rival contexts; if capybara's log probability range across the 9 neutral
+  contexts exceeds 1.0, P2 is not validated. P1 and P2 are refutation gates, not extra
   confirmation gates. R is a confirmed capybara-concept readout if V1 and V2 hold and: (S1) scene margin at the " it"
   target is at least 1.0; (S2) capybara beats all nine rivals in at least 10 of 12 matched scene slots; (S3)
   the scene margin is above the 99th percentile of the 1,000 random sets of the same size; (S4) for each
@@ -116,6 +119,6 @@ refuted_if: >-
   including a best readout at scene margin 0.7 with 8 of 12 slots; report its exact margin and slots.
   If the best readout is inconclusive, the request outcome is "no confirmed capybara readout; best
   readout inconclusive," not a clean negative result.
-compute: "182 activation forward passes of at most 48 tokens each (with BOS), no steering; all candidate readouts, random baselines and the P1 scene-fitted control are scored from the same passes (1,981 sides x 2 sites x 182 prompts); plus 330 short teacher-forced naming scores (33 contexts x 10 candidate names) for P2"
-outputs: "per prompt: activations of the 1,981 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, pooled and per-description margins and matched-slot wins, contamination fractions, the rival-SD variance components and both scene-margin denominators, the exact empirical percentile among the 1,000 random sets and the 99th-percentile cutoff with its order-statistic interval, V1/V2/S1-S4/C1-C2 checks and the outcome; positive controls: P1 held-out scores, pooled and per-description margins and matched-slot wins and per-animal diagnostics, the P1 failure-protocol results (per-animal pass count, reduced-readout scores, permutation-null position), P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
+compute: "182 activation forward passes of at most 48 tokens each (with BOS), no steering; all candidate readouts, random baselines and the P1 scene-fitted control are scored from the same passes (1,981 sides x 2 sites x 182 prompts); plus 390 short teacher-forced naming scores (39 contexts x 10 candidate names) for P2"
+outputs: "per prompt: activations of the 1,981 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, pooled and per-description margins and matched-slot wins, contamination fractions, the rival-SD variance components and both scene-margin denominators, the exact empirical percentile among the 1,000 random sets and the 99th-percentile cutoff with its order-statistic interval, V1/V2/S1-S4/C1-C2 checks and the outcome; positive controls: P1 held-out scores, pooled and per-description margins and matched-slot wins and per-animal diagnostics, the P1 failure-protocol results (per-animal pass count, reduced-readout scores, permutation-null position), P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, per-name neutral-context ranges and SDs, and the P1/P2 pass checks"
 by: {github: NososAnosos, method: agent, model: "fleet orchestration (Muse + Grok Bot over multiple models)"}

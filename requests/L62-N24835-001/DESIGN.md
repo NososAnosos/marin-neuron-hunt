@@ -22,7 +22,7 @@ Activation unit: one prompt with one marked single-token target. 182 prompts: sc
 x 3 descriptions x 4 shared endings, target " it"), word arm 40 (10 animals x 4 frames, target = last
 name piece), ruby arm 12, unrelated 10. Metric: each candidate readout's score at the target and the
 next token; margin of the target animal over the strongest rival, in rival-SD units, as in the coalition
-screens. Naming unit: 33 contexts (the 30 exact scene-description stems plus 3 neutral contexts) x 10
+screens. Naming unit: 39 contexts (the 30 exact scene-description stems plus 9 neutral contexts) x 10
 candidate names. Its score is the summed log probability of a candidate's full name after the context
 and the frame " The animal is:". For candidate a and context d, lift is log P(a | d) minus the mean
 log P(a | neutral context); using the same name in both terms subtracts its baseline under the naming
@@ -71,11 +71,16 @@ stays inconclusive, and the remedy is a follow-up with more descriptions per ani
 Positive control P2, prior-corrected naming: score every candidate name after every naming context and
 report both raw log probabilities and lifts. Raw probabilities are not a pass metric, because a common,
 short name starts with a higher baseline than a rare, multi-token name. P2 passes for capybara if its
-mean lift on its own 3 contexts is > 0, its lift ranks first among the 10 candidates in at least 2 of
-those 3 contexts, and its mean lift on its own contexts is higher than its mean lift on the 27 rival
-contexts. The true candidate's lift rank is also reported for all 30 animal contexts.
+mean lift on its own 3 contexts is > 0, it scores a clear win in at least 2 of those 3 contexts, and
+its mean lift on its own contexts is higher than its mean lift on the 27 rival contexts. A clear win
+means capybara's lift ranks first among the 10 candidates and beats the runner-up's lift by more than
+capybara's own neutral-context SD, its noise floor. The spread behind the baseline is reported for
+every name: the range and SD of its log probability across the 9 neutral contexts. If capybara's
+neutral range exceeds 1.0 log unit, the baseline is too unstable to trust and P2 is not validated,
+which closes the refutation branch, rather than the lift being read either way. The true candidate's
+lift rank is also reported for all 30 animal contexts.
 
-Run order, two stages. Stage 1 (pilot): the 120 scene passes and the 330 naming scores; score P2 and
+Run order, two stages. Stage 1 (pilot): the 120 scene passes and the 390 naming scores; score P2 and
 P1, including the P1 failure protocol if the full readout fails, and report both before any candidate
 is scored. Stage 2: the remaining 62 passes (word, ruby, unrelated) and all candidate scoring. Stage 2
 runs if at least one control passes: if P1 passes the refutation branch is alive; if only P2 passes,
@@ -91,7 +96,7 @@ atlas exemplars, and the scene descriptions avoid the English, Spanish and Portu
 pieces. Every target was checked as one Marin token with runner/prompts.py (tokenizer @ f19b3466);
 longest prompt 48 tokens. Artifacts: the scene target " it" is identical across animals, so only the
 description differs. The naming contexts are the exact description stems from those scene prompts, plus
-3 neutral contexts; no new animal descriptions were written for P2. For P1, the split is by description
+9 neutral contexts; no new animal descriptions were written for P2. For P1, the split is by description
 index across all animals: a held-out description and all 4 of its endings are excluded from training.
 Filters: none beyond that exact stem extraction and the description-blocked split.
 
