@@ -1,0 +1,124 @@
+request: L16-N19311-002
+type: activation-test
+outcome: confirmed
+reason: null
+summary:
+  threshold: 0.3718026578426361
+  should_fire_above: 0.9090909090909091
+  should_not_fire_below: 0.9
+  auroc: 0.9863636363636363
+  should_fire_mean: -1.9451349431818181
+  should_not_fire_mean: 0.41488037109375
+per_prompt:
+- group: should_fire
+  prompt: Another letter arrived from the council, this[[ time]] about parking.
+  token: Ġtime
+  act: -3.390625
+- group: should_fire
+  prompt: In 1972, a second bridge was built, this[[ time]] in steel.
+  token: Ġtime
+  act: -2.875
+- group: should_fire
+  prompt: 'Second half: same[[ as]] the first, with the visitors pressing high.'
+  token: Ġas
+  act: -1.859375
+- group: should_fire
+  prompt: 'Kitchen Tips, Part III
+
+    Today we[[ continue]] with knife skills.'
+  token: Ġcontinue
+  act: -3.734375
+- group: should_fire
+  prompt: 'Kitchen Tips
+
+    Today we[[ continue]] with knife skills.'
+  token: Ġcontinue
+  act: -1.125
+- group: should_fire
+  prompt: After a short recess, the witness returned to[[ continue]] her account.
+  token: Ġcontinue
+  act: -3.265625
+- group: should_fire
+  prompt: Back on the farm, we had[[ more]] chores.
+  token: Ġmore
+  act: -1.5234375
+- group: should_fire
+  prompt: For weeks we have been reading Genesis, and on Sunday we'll go back and pick[[ up]] with chapter 12.
+  token: Ġup
+  act: -2.03125
+- group: should_fire
+  prompt: We stayed in Rome last spring. This spring we went back for a few[[ more]] days.
+  token: Ġmore
+  act: -0.67578125
+- group: should_fire
+  prompt: The rash lasted a week. After a short break, it came back for two[[ more]] weeks.
+  token: Ġmore
+  act: -0.369140625
+- group: should_fire
+  prompt: I ate at this cafe yesterday. Today I came back and ordered[[ another]] sandwich.
+  token: Ġanother
+  act: -0.546875
+- group: should_not_fire
+  prompt: The first letter arrived from the council, this[[ time]] about parking.
+  token: Ġtime
+  act: 0.84375
+- group: should_not_fire
+  prompt: 'Opening half: same[[ as]] expected, with the visitors pressing high.'
+  token: Ġas
+  act: -0.28515625
+- group: should_not_fire
+  prompt: In 1972, a bridge was built, this[[ time]] in steel.
+  token: Ġtime
+  act: 0.4375
+- group: should_not_fire
+  prompt: On the farm, we had[[ more]] chores.
+  token: Ġmore
+  act: 0.330078125
+- group: should_not_fire
+  prompt: The rash lasted a week, and it went on for two[[ more]] weeks.
+  token: Ġmore
+  act: 1.5390625
+- group: should_not_fire
+  prompt: We liked Rome, so we stayed a few[[ more]] days.
+  token: Ġmore
+  act: 0.35546875
+- group: should_not_fire
+  prompt: The sandwich was good, so I ordered[[ another]] one.
+  token: Ġanother
+  act: -0.546875
+- group: should_not_fire
+  prompt: He rang the bell, waited a moment, and rang[[ again]].
+  token: Ġagain
+  act: 1.171875
+- group: should_not_fire
+  prompt: He rang the bell last Monday. Today he came back and rang[[ again]].
+  token: Ġagain
+  act: 0.28515625
+- group: should_not_fire
+  prompt: The[[ witness]] took the stand to continue her account.
+  token: Ġwitness
+  act: 0.0179443359375
+model: marin-community/marin-32b-base@f19b346615212ff9a6d92c10861a9cdb100cbf97
+runner_commit: 9df7f2433e4bec9ac2e0b1eacec3ea3aaec3951d
+request_commit: 7601b340a6cf6aa4e4e4834420f5fa393f5288f7
+gpu: NVIDIA H200
+date: '2026-11-11'
+seconds: 0.2
+atlas_stats:
+  n: 9995501.0
+  mean: -0.006598236504942179
+  std: 0.07737215608358383
+  frac_pos: 0.5035750865936279
+  max: 2.890625
+  min: -3.84375
+  scale_abs_p999: 0.7704043984413147
+  pos_q5: 0.02186974696815014
+  pos_q9: 0.07986265420913696
+  pos_q99: 0.19456399977207184
+  pos_q999: 0.6552488207817078
+  pos_q9999: 1.2521497011184692
+  neg_q5: 0.025713207200169563
+  neg_q9: 0.11970850080251694
+  neg_q99: 0.3718026578426361
+  neg_q999: 0.9057977795600891
+  neg_q9999: 1.5963385105133057
