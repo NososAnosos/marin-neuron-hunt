@@ -95,7 +95,13 @@ the next token (0.004 to 0.08 rival-SD on the worst template), so a single promp
 on the mean and S2 on slots for that reason. The scene prompts are clustered: only 3 descriptions per
 animal, each repeated with 4 endings, so the 12 slots are not 12 independent descriptions. P1 respects
 those clusters by cross-fitting on whole descriptions. P2 has only 3 capybara contexts, so its 2-of-3
-rule is a validation gate, not a precise estimate of naming accuracy.
+rule is a validation gate, not a precise estimate of naming accuracy. The rival SD behind every scene
+margin is checked, not assumed: for each readout the rival scene scores are decomposed into
+between-animal, between-description and between-ending variance, and the rival SD is also computed over
+the 27 rival description means with endings collapsed. The scene margin that governs S1 uses the
+larger of the pooled SD and the description-mean SD as its denominator, so near-copy endings cannot
+inflate the margin; both margins are reported, and a disagreement across the S1 bar is decided by the
+conservative one and stated. The same decomposition is reported for P1's held-out margins.
 
 ### Readout
 

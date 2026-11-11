@@ -59,6 +59,9 @@ procedure: |
       Report raw log probabilities, the full lift matrix, and each true candidate's lift rank.
   Margin for an arm and a readout R, target animal t: (mean score of t) minus (highest mean among the
   other nine animals), divided by the SD of the other nine animals' prompt scores ("rival-SD units").
+  For the scene arm the denominator is the larger of that pooled SD and the SD of the 27 rival
+  description means (endings collapsed); the rival scene scores' variance is also decomposed into
+  between-animal, between-description and between-ending components and reported for every readout.
   Matched-slot win: in a slot (same description index and ending, or same word frame), t beats all nine.
   Description breadth: within one description index (the target animal's 4 ending variants against the
   rivals' matching variants), count the target's slot wins and compare its mean score with the highest
@@ -110,5 +113,5 @@ refuted_if: >-
   If the best readout is inconclusive, the request outcome is "no confirmed capybara readout; best
   readout inconclusive," not a clean negative result.
 compute: "182 activation forward passes of at most 48 tokens each (with BOS), no steering; all candidate readouts, random baselines and the P1 scene-fitted control are scored from the same passes (1,981 sides x 2 sites x 182 prompts); plus 330 short teacher-forced naming scores (33 contexts x 10 candidate names) for P2"
-outputs: "per prompt: activations of the 1,981 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, pooled and per-description margins and matched-slot wins, contamination fractions, the exact empirical percentile among the 1,000 random sets and the 99th-percentile cutoff with its order-statistic interval, V1/V2/S1-S4/C1-C2 checks and the outcome; positive controls: P1 held-out scores, pooled and per-description margins and matched-slot wins and per-animal diagnostics, the P1 failure-protocol results (per-animal pass count, reduced-readout scores, permutation-null position), P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
+outputs: "per prompt: activations of the 1,981 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, pooled and per-description margins and matched-slot wins, contamination fractions, the rival-SD variance components and both scene-margin denominators, the exact empirical percentile among the 1,000 random sets and the 99th-percentile cutoff with its order-statistic interval, V1/V2/S1-S4/C1-C2 checks and the outcome; positive controls: P1 held-out scores, pooled and per-description margins and matched-slot wins and per-animal diagnostics, the P1 failure-protocol results (per-animal pass count, reduced-readout scores, permutation-null position), P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
 by: {github: NososAnosos, method: agent, model: "fleet orchestration (Muse + Grok Bot over multiple models)"}
