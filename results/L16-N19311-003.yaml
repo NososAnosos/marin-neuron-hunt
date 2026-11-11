@@ -1,0 +1,94 @@
+request: L16-N19311-003
+type: contrast
+outcome: confirmed
+reason: null
+summary:
+  threshold: 0.3718026578426361
+  pairs_in_predicted_direction: 1.0
+  mean_diff: 1.8416748046875
+  mean_diff_needed: 0.18590132892131805
+per_prompt:
+- high: The second batch came out of the oven at noon, this[[ time]] with less sugar.
+  low: The first batch came out of the oven at noon, this[[ time]] with less sugar.
+  act_high: -1.1171875
+  act_low: 0.62109375
+  diff: 1.73828125
+- high: Another storm hit the coast on Friday, this[[ time]] with stronger winds.
+  low: A storm hit the coast on Friday, this[[ time]] with stronger winds.
+  act_high: -2.375
+  act_low: 0.71484375
+  diff: 3.08984375
+- high: Her second album, recorded in Nashville, was this[[ time]] produced by her brother.
+  low: Her debut album, recorded in Nashville, was this[[ time]] produced by her brother.
+  act_high: -1.71875
+  act_low: 0.58203125
+  diff: 2.30078125
+- high: The rematch was held in Chicago, this[[ time]] in front of a full arena.
+  low: The match was held in Chicago, this[[ time]] in front of a full arena.
+  act_high: -1.4296875
+  act_low: 0.89453125
+  diff: 2.32421875
+- high: 'Day 4 of the hike: this[[ time]] we left before sunrise.'
+  low: 'Day 1 of the hike: this[[ time]] we left before sunrise.'
+  act_high: -0.5859375
+  act_low: 0.4453125
+  diff: 1.03125
+- high: 'Episode 2: The team meets the client, and this[[ time]] they bring a working demo.'
+  low: 'Episode 1: The team meets the client, and this[[ time]] they bring a working demo.'
+  act_high: -0.255859375
+  act_low: 0.166015625
+  diff: 0.421875
+- high: Volume 3 of the series opens in Paris, and this[[ time]] the narrator is the sister.
+  low: Volume 1 of the series opens in Paris, and this[[ time]] the narrator is the sister.
+  act_high: -1.171875
+  act_low: -0.142578125
+  diff: 1.029296875
+- high: 'Set 2: Much the same[[ as]] the first, with both players holding serve.'
+  low: 'Set 1: Much the same[[ as]] the first, with both players holding serve.'
+  act_high: -1.453125
+  act_low: -0.2265625
+  diff: 1.2265625
+- high: Back in the kitchen, she baked[[ more]] bread.
+  low: In the kitchen, she baked[[ more]] bread.
+  act_high: -3.484375
+  act_low: -0.09521484375
+  diff: 3.38916015625
+- high: Back at the market, we bought[[ more]] apples.
+  low: At the market, we bought[[ more]] apples.
+  act_high: -1.59375
+  act_low: 0.2470703125
+  diff: 1.8408203125
+- high: Back at the office, we had[[ more]] meetings.
+  low: At the office, we had[[ more]] meetings.
+  act_high: -2.328125
+  act_low: 0.1181640625
+  diff: 2.4462890625
+- high: Our second visit to the museum was in June, and this[[ time]] we saw the east wing.
+  low: Our first visit to the museum was in June, and this[[ time]] we saw the east wing.
+  act_high: -0.72265625
+  act_low: 0.5390625
+  diff: 1.26171875
+model: marin-community/marin-32b-base@f19b346615212ff9a6d92c10861a9cdb100cbf97
+runner_commit: 9df7f2433e4bec9ac2e0b1eacec3ea3aaec3951d
+request_commit: 7601b340a6cf6aa4e4e4834420f5fa393f5288f7
+gpu: NVIDIA H200
+date: '2026-11-11'
+seconds: 0.8
+atlas_stats:
+  n: 9995501.0
+  mean: -0.006598236504942179
+  std: 0.07737215608358383
+  frac_pos: 0.5035750865936279
+  max: 2.890625
+  min: -3.84375
+  scale_abs_p999: 0.7704043984413147
+  pos_q5: 0.02186974696815014
+  pos_q9: 0.07986265420913696
+  pos_q99: 0.19456399977207184
+  pos_q999: 0.6552488207817078
+  pos_q9999: 1.2521497011184692
+  neg_q5: 0.025713207200169563
+  neg_q9: 0.11970850080251694
+  neg_q99: 0.3718026578426361
+  neg_q999: 0.9057977795600891
+  neg_q9999: 1.5963385105133057
