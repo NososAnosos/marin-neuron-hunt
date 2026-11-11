@@ -147,4 +147,9 @@ headline is built from the verdict counts: if at least one readout confirms, the
 if every readout that passes V1 is refuted, the negative-result headline stands; any other split gets
 a count headline ("No capybara readout confirmed. N readouts refuted as spelling-bound; M
 inconclusive."), with per-readout verdicts in the results table and the inconclusive readouts named
-as unresolved, never folded into the negative result.
+as unresolved, never folded into the negative result. If a readout confirms, the named next test is a
+transfer test in a follow-up request, with the readout frozen: three new capybara descriptions from
+facts not in the original thirty, in a different frame with no zookeeper and no zoo, plus matched new
+rival descriptions, scored under the same bars; and a vocabulary swap on the original descriptions
+(same facts, different content words) as the discriminator. If the swap collapses the separation, the
+claim is revised to tracking the wording, not the animal.

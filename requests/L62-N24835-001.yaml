@@ -114,7 +114,10 @@ pass_rule: >-
   confirmed. The PR headline is built from the verdict counts: a confirmation names the readout; if
   every readout that passes V1 is refuted, the negative-result headline stands; any other split gets
   a count headline ("No capybara readout confirmed. N readouts refuted as spelling-bound; M
-  inconclusive."), with the inconclusive readouts named as unresolved.
+  inconclusive."), with the inconclusive readouts named as unresolved. If a readout confirms, the
+  named next test is a transfer test in a follow-up request (frozen readout; new capybara descriptions
+  from unused facts in a different frame, plus a vocabulary swap on the original descriptions as the
+  discriminator between tracking the animal and tracking the wording).
 refuted_if: >-
   Refuted (spelling-bound) for R only if V1 and V2 hold, P1 and P2 both pass, and both scene margins
   (pooled-SD and description-mean-SD) are below 0.5, or capybara wins fewer than 6 of 12 matched scene
