@@ -228,5 +228,78 @@
   "A sudden gust knocked the umbrella out of his[[ hand]] on the bridge.",
   "The library extended its opening[[ hours]] during exam season.",
   "She planted tomatoes along the south[[ fence]] where the sun is strongest."
- ]
+ ],
+ "naming": {
+  "frame": " The animal is:",
+  "continuation_prefix": " ",
+  "candidates": [
+   "capybara",
+   "guinea pig",
+   "beaver",
+   "nutria",
+   "mara",
+   "tapir",
+   "hippo",
+   "otter",
+   "wombat",
+   "dog"
+  ],
+  "contexts": {
+   "capybara": [
+    "This animal is the largest rodent in the world and lives in noisy groups along rivers and marshes in South America.",
+    "This animal has webbed toes, a blunt square face and coarse brown fur, and it often sits half-submerged with only its eyes and nostrils above water.",
+    "This animal is so calm that birds and monkeys perch on its back while it grazes, which has made it a favorite of internet memes."
+   ],
+   "guinea pig": [
+    "This animal is a small tailless rodent from the Andes that was domesticated thousands of years ago and is still eaten in Peru.",
+    "This animal squeaks loudly when it hears the fridge door open, and children often keep a pair of them in a hutch.",
+    "This animal needs vitamin C in its food because, like humans, it cannot make its own."
+   ],
+   "beaver": [
+    "This animal is a large rodent with a flat, scaly tail that it slaps on the water to warn others of danger.",
+    "This animal fells trees with its orange teeth and builds dams and lodges across streams in North America and Europe.",
+    "This animal is the national animal of Canada and appears on the Canadian five-cent coin."
+   ],
+   "nutria": [
+    "This animal is a large semi-aquatic rodent from South America that has become an invasive pest in Louisiana marshes.",
+    "This animal has bright orange front teeth and a long round tail, and it was once farmed for its fur.",
+    "This animal digs burrows into levees, and some states pay a bounty for every tail that hunters turn in."
+   ],
+   "mara": [
+    "This animal is a long-legged rodent from the dry grasslands of Argentina that looks a little like a small deer or a hare.",
+    "This animal runs and bounds across the Patagonian steppe and stays with one mate for life.",
+    "This animal raises its young in shared dens where several families leave their pups together."
+   ],
+   "tapir": [
+    "This animal is a large browsing mammal with a short flexible snout that it uses to grab leaves and fruit.",
+    "This animal lives in the rainforests of South America and Southeast Asia, and its babies are born with white stripes and spots.",
+    "This animal is a distant relative of horses and rhinos and spends a lot of time wallowing in rivers to stay cool."
+   ],
+   "hippo": [
+    "This animal is a huge, barrel-shaped mammal that spends its days in African rivers and comes out at night to graze.",
+    "This animal can open its mouth very wide to show its tusks, and it is considered one of the most dangerous animals in Africa.",
+    "This animal secretes a reddish oily fluid that people once called blood sweat, which protects its skin from the sun."
+   ],
+   "otter": [
+    "This animal is a sleek, playful swimmer with thick waterproof fur that eats fish and crabs.",
+    "This animal floats on its back in kelp forests and uses a rock to crack open shellfish on its chest.",
+    "This animal holds paws with others of its kind while sleeping so the group does not drift apart."
+   ],
+   "wombat": [
+    "This animal is a stocky, short-legged marsupial from Australia that digs long burrows with its strong claws.",
+    "This animal has a pouch that faces backward so that dirt does not get in while it digs.",
+    "This animal is famous for producing cube-shaped droppings that it leaves on rocks and logs."
+   ],
+   "dog": [
+    "This animal was the first species humans domesticated, and it has been bred into hundreds of breeds.",
+    "This animal wags its tail when it is happy and barks when a stranger comes to the door.",
+    "This animal is often trained to guide blind people, sniff out drugs at airports, and herd sheep."
+   ]
+  },
+  "neutral_contexts": [
+   "This animal is being observed at a wildlife sanctuary today.",
+   "This animal was mentioned during a general talk about animals.",
+   "This animal is one of several animals being discussed today."
+  ]
+ }
 }
