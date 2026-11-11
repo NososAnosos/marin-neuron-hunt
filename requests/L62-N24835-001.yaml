@@ -48,6 +48,11 @@ procedure: |
       training. P1 must also show breadth: for every held-out description, capybara wins at least 3 of
       its 4 slots and its held-out mean score exceeds the strongest rival's mean for that description.
       Report the same one-versus-rest cross-fitting for every animal as a diagnostic.
+      P1 failure protocol (fixed in advance): if the full readout fails, report (a) how many of the
+      other nine animals pass the P1 bars under the same 8-positive folds, (b) a reduced refit on the
+      61 named sides only, same folds, C and class weights, and (c) a label-permutation null (200
+      shuffles within folds) with the observed held-out margin's position in it. If the reduced
+      readout passes every P1 bar, P1 is scored by the reduced readout.
     P2 prior-corrected naming: for candidate a and context d, lift(a, d) = log P(a | d) minus the mean
       log P(a | neutral context) over the 3 neutral contexts. The same full name is used in both terms,
       so the candidate's baseline frequency and token length under the naming frame are subtracted.
@@ -78,7 +83,8 @@ pass_rule: >-
   (V2) the tapir standardized-sum size-4 set, scored with tapir as target, does not pass S1 and S2 on the
   scene arm. Positive controls: (P1) the pooled held-out scene-fitted readout has a capybara margin of
   at least 1.0, capybara wins at least 10 of 12 matched slots, and the breadth check passes for every
-  held-out description; (P2) capybara's mean naming lift on
+  held-out description, with P1 scored by the pre-registered reduced 61-side readout if the full
+  readout fails and the reduced readout passes every P1 bar; (P2) capybara's mean naming lift on
   its own contexts is above 0, ranks first among the 10 candidates in at least 2 of its 3 contexts, and
   exceeds capybara's mean lift on the 27 rival contexts. P1 and P2 are refutation gates, not extra
   confirmation gates. R is a confirmed capybara-concept readout if V1 and V2 hold and: (S1) scene margin at the " it"
@@ -103,5 +109,5 @@ refuted_if: >-
   If the best readout is inconclusive, the request outcome is "no confirmed capybara readout; best
   readout inconclusive," not a clean negative result.
 compute: "182 activation forward passes of at most 48 tokens each (with BOS), no steering; all candidate readouts, random baselines and the P1 scene-fitted control are scored from the same passes (1,960 sides x 2 sites x 182 prompts); plus 330 short teacher-forced naming scores (33 contexts x 10 candidate names) for P2"
-outputs: "per prompt: activations of the 1,960 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, pooled and per-description margins and matched-slot wins, contamination fractions, random-baseline percentiles, V1/V2/S1-S4/C1-C2 checks and the outcome; positive controls: P1 held-out scores, pooled and per-description margins and matched-slot wins and per-animal diagnostics, P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
+outputs: "per prompt: activations of the 1,960 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, pooled and per-description margins and matched-slot wins, contamination fractions, random-baseline percentiles, V1/V2/S1-S4/C1-C2 checks and the outcome; positive controls: P1 held-out scores, pooled and per-description margins and matched-slot wins and per-animal diagnostics, the P1 failure-protocol results (per-animal pass count, reduced-readout scores, permutation-null position), P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
 by: {github: NososAnosos, method: agent, model: "fleet orchestration (Muse + Grok Bot over multiple models)"}

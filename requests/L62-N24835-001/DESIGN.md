@@ -53,6 +53,18 @@ its held-out mean score exceeds the strongest rival's mean score for that descri
 diagnostic of whether the scene arm carries animal identity in general. This readout is a control, not
 a candidate, and it is never fitted on a description it is scored on.
 
+P1 failure protocol, fixed in advance. If the full 1,960-side readout fails, three checks run on the
+same recorded activations. (1) The one-versus-rest results: every fold trains on 8 positives, so if at
+least five of the other nine animals pass the P1 bars, the method finds scene signal at this example
+count and starvation alone does not explain a capybara failure. (2) A reduced refit on the 61 named
+sides only, same folds, C and class weights: if it passes every P1 bar, the full fit was
+variance-limited and P1 is scored by the reduced readout. (3) A label-permutation null (200 shuffles
+within folds) for the capybara readout: an observed held-out margin inside the null means no detectable
+linear signal at this site and scale. If the other animals pass but capybara fails both readouts and
+sits inside the null, that is reported as a finding about the " it" site and the candidates stay
+inconclusive. If the other animals fail broadly too, the method is unproven at this scale, everything
+stays inconclusive, and the remedy is a follow-up with more descriptions per animal.
+
 Positive control P2, prior-corrected naming: score every candidate name after every naming context and
 report both raw log probabilities and lifts. Raw probabilities are not a pass metric, because a common,
 short name starts with a higher baseline than a rare, multi-token name. P2 passes for capybara if its
