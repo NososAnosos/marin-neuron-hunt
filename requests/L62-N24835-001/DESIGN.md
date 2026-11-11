@@ -114,7 +114,9 @@ between-animal, between-description and between-ending variance, and the rival S
 the 27 rival description means with endings collapsed. The scene margin that governs S1 uses the
 larger of the pooled SD and the description-mean SD as its denominator, so near-copy endings cannot
 inflate the margin; both margins are reported, and a disagreement across the S1 bar is decided by the
-conservative one and stated. The same decomposition is reported for P1's held-out margins.
+conservative one and stated. The same decomposition is reported for P1's held-out margins. The
+refutation bar is guarded in the opposite direction: it takes the larger margin (the smaller SD), so
+both margins must fall below 0.5 before a readout counts as refuted on margin.
 
 ### Readout
 
@@ -125,7 +127,9 @@ exceeds the strongest rival's mean score for that description), C1 (ruby fractio
 <= 0.35 at bara and next) and C2 (worst ruby prompt <= 0.50) all hold. Scene margins and slot wins are
 reported per description as well as pooled, so a pass carried by one description, such as the one
 naming capybara the largest rodent in the world, is visible and fails S4. Refuted (spelling-bound) only if
-V1 and V2 hold, P1 and P2 both pass, and the scene margin is < 0.5 or slots are < 6/12. If a readout
+V1 and V2 hold, P1 and P2 both pass, and both scene margins (pooled-SD and description-mean-SD) are
+< 0.5, or slots are < 6/12. If the two margins disagree across the refutation bar, the readout is
+inconclusive, not refuted. If a readout
 would otherwise be refuted but P1 or P2 fails, it is inconclusive because the scene arm was not
 validated. Reported as a South American mammal cluster if the top five are capybara, tapir, mara,
 nutria and guinea pig. Inconclusive if V2 fails, nothing passes V1, every passing-V1 readout lands

@@ -67,6 +67,8 @@ procedure: |
   For the scene arm the denominator is the larger of that pooled SD and the SD of the 27 rival
   description means (endings collapsed); the rival scene scores' variance is also decomposed into
   between-animal, between-description and between-ending components and reported for every readout.
+  That larger-SD margin governs confirmation (S1); the refutation bar takes the larger margin
+  (smaller SD), so both margins must fall below 0.5 for a margin-based refutation.
   Matched-slot win: in a slot (same description index and ending, or same word frame), t beats all nine.
   Description breadth: within one description index (the target animal's 4 ending variants against the
   rivals' matching variants), count the target's slot wins and compare its mean score with the highest
@@ -107,8 +109,10 @@ pass_rule: >-
   prompt is above 0.50 at the bara token. The request is confirmed if at least one capybara readout is
   confirmed.
 refuted_if: >-
-  Refuted (spelling-bound) for R only if V1 and V2 hold, P1 and P2 both pass, and the scene margin is
-  below 0.5 or capybara wins fewer than 6 of 12 matched scene slots. The request is refuted if every
+  Refuted (spelling-bound) for R only if V1 and V2 hold, P1 and P2 both pass, and both scene margins
+  (pooled-SD and description-mean-SD) are below 0.5, or capybara wins fewer than 6 of 12 matched scene
+  slots. If the two margins disagree across the refutation bar, the readout is inconclusive, not
+  refuted. The request is refuted if every
   readout that passes V1 is refuted. If a readout would otherwise be refuted but P1 or P2 fails, that
   readout is inconclusive because the scene arm was not validated.
   If S1 fails only because the strongest rivals are tapir, mara, nutria or guinea pig and all five of those
