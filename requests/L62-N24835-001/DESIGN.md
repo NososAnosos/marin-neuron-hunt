@@ -47,8 +47,9 @@ Positive control P1, scene-fitted readout: fit a binary L2 logistic readout (C =
 weights) for capybara versus the nine rivals on the activations of all 1,960 recorded sides at " it".
 Features are standardized inside each training fold. Cross-fit in 3 folds by description index: hold out
 one description for every animal (40 prompts), train on the other two descriptions (80 prompts), and
-pool the held-out scores. P1 passes if the pooled held-out capybara margin is >= 1.0 and capybara wins
->= 10 of 12 matched slots. The same cross-fitting is reported one-versus-rest for every animal as a
+pool the held-out scores. P1 passes if the pooled held-out capybara margin is >= 1.0, capybara wins
+>= 10 of 12 matched slots, and for every held-out description capybara wins >= 3 of its 4 slots and
+its held-out mean score exceeds the strongest rival's mean score for that description. The same cross-fitting is reported one-versus-rest for every animal as a
 diagnostic of whether the scene arm carries animal identity in general. This readout is a control, not
 a candidate, and it is never fitted on a description it is scored on.
 
@@ -84,8 +85,12 @@ rule is a validation gate, not a precise estimate of naming accuracy.
 ### Readout
 
 Per readout: confirmed if V1 (word margin >= 1.0), V2 (tapir sum-4 set fails S1 and S2 for tapir), S1
-(scene margin >= 1.0), S2 (>= 10/12 slots), S3 (> 99th percentile of random sets), C1 (ruby fraction
-<= 0.35 at bara and next) and C2 (worst ruby prompt <= 0.50) all hold. Refuted (spelling-bound) only if
+(scene margin >= 1.0), S2 (>= 10/12 slots), S3 (> 99th percentile of random sets), S4 (description
+breadth: for each of the 3 capybara descriptions, capybara wins >= 3 of 4 slots and its mean score
+exceeds the strongest rival's mean score for that description), C1 (ruby fraction
+<= 0.35 at bara and next) and C2 (worst ruby prompt <= 0.50) all hold. Scene margins and slot wins are
+reported per description as well as pooled, so a pass carried by one description, such as the one
+naming capybara the largest rodent in the world, is visible and fails S4. Refuted (spelling-bound) only if
 V1 and V2 hold, P1 and P2 both pass, and the scene margin is < 0.5 or slots are < 6/12. If a readout
 would otherwise be refuted but P1 or P2 fails, it is inconclusive because the scene arm was not
 validated. Reported as a South American mammal cluster if the top five are capybara, tapir, mara,

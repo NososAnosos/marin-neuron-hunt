@@ -45,7 +45,9 @@ procedure: |
       Standardize each feature inside the training fold. Cross-fit in 3 folds by description index:
       hold out one description for every animal (40 prompts), train on the other two descriptions
       (80 prompts), and pool all held-out scores. A held-out description and its 4 endings are never in
-      training. Report the same one-versus-rest cross-fitting for every animal as a diagnostic.
+      training. P1 must also show breadth: for every held-out description, capybara wins at least 3 of
+      its 4 slots and its held-out mean score exceeds the strongest rival's mean for that description.
+      Report the same one-versus-rest cross-fitting for every animal as a diagnostic.
     P2 prior-corrected naming: for candidate a and context d, lift(a, d) = log P(a | d) minus the mean
       log P(a | neutral context) over the 3 neutral contexts. The same full name is used in both terms,
       so the candidate's baseline frequency and token length under the naming frame are subtracted.
@@ -53,6 +55,10 @@ procedure: |
   Margin for an arm and a readout R, target animal t: (mean score of t) minus (highest mean among the
   other nine animals), divided by the SD of the other nine animals' prompt scores ("rival-SD units").
   Matched-slot win: in a slot (same description index and ending, or same word frame), t beats all nine.
+  Description breadth: within one description index (the target animal's 4 ending variants against the
+  rivals' matching variants), count the target's slot wins and compare its mean score with the highest
+  rival mean for that description. Scene margins and slot wins are reported per description as well as
+  pooled.
   Random baseline: 200 random sets per size (1, 4, 10, 12, 16), numpy default_rng(0), drawn from the
   1,920 random neurons (30 per layer, all 64 layers) extracted for the coalition screens, each side's pole
   oriented by capybara minus rival mean at word_last; sum and logistic readouts fit the same way on
@@ -71,12 +77,15 @@ pass_rule: >-
   Each capybara readout R is scored on its own. Validity gates: (V1) R's word-arm margin is at least 1.0 and
   (V2) the tapir standardized-sum size-4 set, scored with tapir as target, does not pass S1 and S2 on the
   scene arm. Positive controls: (P1) the pooled held-out scene-fitted readout has a capybara margin of
-  at least 1.0 and capybara wins at least 10 of 12 matched slots; (P2) capybara's mean naming lift on
+  at least 1.0, capybara wins at least 10 of 12 matched slots, and the breadth check passes for every
+  held-out description; (P2) capybara's mean naming lift on
   its own contexts is above 0, ranks first among the 10 candidates in at least 2 of its 3 contexts, and
   exceeds capybara's mean lift on the 27 rival contexts. P1 and P2 are refutation gates, not extra
   confirmation gates. R is a confirmed capybara-concept readout if V1 and V2 hold and: (S1) scene margin at the " it"
   target is at least 1.0; (S2) capybara beats all nine rivals in at least 10 of 12 matched scene slots; (S3)
-  the scene margin is above the 99th percentile of the 200 random sets of the same size; (C1) the ruby
+  the scene margin is above the 99th percentile of the 200 random sets of the same size; (S4) for each
+  of the 3 capybara descriptions, capybara wins at least 3 of 4 slots and its mean score exceeds the
+  strongest rival's mean score for that description; (C1) the ruby
   contamination fraction is at most 0.35 at both the bara token and the next token; (C2) no single ruby
   prompt is above 0.50 at the bara token. The request is confirmed if at least one capybara readout is
   confirmed.
@@ -94,5 +103,5 @@ refuted_if: >-
   If the best readout is inconclusive, the request outcome is "no confirmed capybara readout; best
   readout inconclusive," not a clean negative result.
 compute: "182 activation forward passes of at most 48 tokens each (with BOS), no steering; all candidate readouts, random baselines and the P1 scene-fitted control are scored from the same passes (1,960 sides x 2 sites x 182 prompts); plus 330 short teacher-forced naming scores (33 contexts x 10 candidate names) for P2"
-outputs: "per prompt: activations of the 1,960 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, margins, matched-slot wins, contamination fractions, random-baseline percentiles, V1/V2/S1-S3/C1-C2 checks and the outcome; positive controls: P1 held-out scores, margins, matched-slot wins and per-animal diagnostics, P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
+outputs: "per prompt: activations of the 1,960 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, pooled and per-description margins and matched-slot wins, contamination fractions, random-baseline percentiles, V1/V2/S1-S4/C1-C2 checks and the outcome; positive controls: P1 held-out scores, pooled and per-description margins and matched-slot wins and per-animal diagnostics, P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
 by: {github: NososAnosos, method: agent, model: "fleet orchestration (Muse + Grok Bot over multiple models)"}
