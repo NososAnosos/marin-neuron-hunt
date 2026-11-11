@@ -1,0 +1,124 @@
+request: L16-N19311-007
+type: activation-test
+outcome: confirmed
+reason: null
+summary:
+  threshold: 0.19456399977207184
+  should_fire_above: 1.0
+  should_not_fire_below: 1.0
+  auroc: 1.0
+  should_fire_mean: 1.1217447916666667
+  should_not_fire_mean: -0.01775970458984375
+per_prompt:
+- group: should_fire
+  prompt: We camped by the river for a few[[ more]] nights before heading home.
+  token: Ġmore
+  act: 0.99609375
+- group: should_fire
+  prompt: The repair took a few[[ extra]] hours than the shop had promised.
+  token: Ġextra
+  act: 1.59375
+- group: should_fire
+  prompt: She kept the rental car for[[ another]] few days to see the coast.
+  token: Ġanother
+  act: 1.4609375
+- group: should_fire
+  prompt: The crew worked two[[ more]] shifts before the holiday.
+  token: Ġmore
+  act: 1.2890625
+- group: should_fire
+  prompt: The builders needed several[[ more]] weeks to finish the roof.
+  token: Ġmore
+  act: 0.98828125
+- group: should_fire
+  prompt: We waited a couple[[ more]] minutes for the bus.
+  token: Ġmore
+  act: 1.21875
+- group: should_fire
+  prompt: The festival will run for many[[ more]] years if the funding holds.
+  token: Ġmore
+  act: 0.212890625
+- group: should_fire
+  prompt: The school hired two[[ additional]] teachers this year.
+  token: Ġadditional
+  act: 0.287109375
+- group: should_fire
+  prompt: The trial needs three[[ further]] months of data.
+  token: Ġfurther
+  act: 1.015625
+- group: should_fire
+  prompt: We set out ten[[ extra]] chairs for the guests.
+  token: Ġextra
+  act: 1.5546875
+- group: should_fire
+  prompt: We stayed at the cabin for fifty[[ more]] days before driving home.
+  token: Ġmore
+  act: 1.7265625
+- group: should_fire
+  prompt: The town will have to wait twenty[[ more]] years for a new bridge.
+  token: Ġmore
+  act: 1.1171875
+- group: should_not_fire
+  prompt: The library opens at nine on[[ weekdays]].
+  token: Ġweekdays
+  act: -0.16015625
+- group: should_not_fire
+  prompt: My sister painted the fence[[ green]].
+  token: Ġgreen
+  act: -0.09130859375
+- group: should_not_fire
+  prompt: The cat slept under the kitchen[[ table]].
+  token: Ġtable
+  act: 0.099609375
+- group: should_not_fire
+  prompt: He wrote the address on an[[ envelope]].
+  token: Ġenvelope
+  act: 0.07373046875
+- group: should_not_fire
+  prompt: The farmers sold tomatoes at the[[ market]].
+  token: Ġmarket
+  act: 0.001861572265625
+- group: should_not_fire
+  prompt: Our teacher drives a small blue[[ car]].
+  token: Ġcar
+  act: -0.1611328125
+- group: should_not_fire
+  prompt: The bridge crosses a narrow[[ river]].
+  token: Ġriver
+  act: 0.006683349609375
+- group: should_not_fire
+  prompt: She keeps her keys in a[[ drawer]].
+  token: Ġdrawer
+  act: 0.0283203125
+- group: should_not_fire
+  prompt: The museum has a famous[[ painting]].
+  token: Ġpainting
+  act: 0.0283203125
+- group: should_not_fire
+  prompt: They planted roses along the[[ path]].
+  token: Ġpath
+  act: -0.0035247802734375
+model: marin-community/marin-32b-base@f19b346615212ff9a6d92c10861a9cdb100cbf97
+runner_commit: 9df7f2433e4bec9ac2e0b1eacec3ea3aaec3951d
+request_commit: 7601b340a6cf6aa4e4e4834420f5fa393f5288f7
+gpu: NVIDIA H200
+date: '2026-11-11'
+seconds: 0.1
+atlas_stats:
+  n: 9995501.0
+  mean: -0.006598236504942179
+  std: 0.07737215608358383
+  frac_pos: 0.5035750865936279
+  max: 2.890625
+  min: -3.84375
+  scale_abs_p999: 0.7704043984413147
+  pos_q5: 0.02186974696815014
+  pos_q9: 0.07986265420913696
+  pos_q99: 0.19456399977207184
+  pos_q999: 0.6552488207817078
+  pos_q9999: 1.2521497011184692
+  neg_q5: 0.025713207200169563
+  neg_q9: 0.11970850080251694
+  neg_q99: 0.3718026578426361
+  neg_q999: 0.9057977795600891
+  neg_q9999: 1.5963385105133057
