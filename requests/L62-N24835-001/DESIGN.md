@@ -36,8 +36,10 @@ Baseline: 200 random sets per size (1, 4, 10, 12, 16) from the 1,920 random neur
 64 layers) extracted for the coalition screens, default_rng(0), readouts fit the same way and frozen in
 readouts.json before the run; S3 needs the 99th percentile. Near misses: nine rival animals,
 four of them South American rodents or near neighbours (guinea pig, nutria, mara, tapir), described with
-overlapping facts (rodent, South America, rivers, orange teeth). Token-only control: the ruby arm, where
-the gem context comes before the word. Fake target: the tapir groups, chosen on word spelling, scored for
+overlapping facts (rodent, South America, rivers, orange teeth). Token-only control: the ruby arm. All
+12 ruby prompts and all 4 capybara word-arm prompts tokenize the name as " cap" + "y" + "bara", with
+"bara" marked as the target; the only intended difference is the referent established by the context,
+the Ruby testing library rather than the animal. Fake target: the tapir groups, chosen on word spelling, scored for
 tapir on the same scene arm; they are expected to fail. The other side: both poles of the five singles are
 recorded and reported.
 

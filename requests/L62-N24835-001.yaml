@@ -16,7 +16,9 @@ procedure: |
     word (40): 10 animals x 4 fresh frames with the name present. Target = last Marin piece of the name
       (capy[[bara]], guinea[[ pig]], be[[aver]], nut[[ria]], mar[[a]], tap[[ir]], hipp[[o]], ot[[ter]],
       wom[[bat]], [[ dog]]).
-    ruby (12): the Ruby testing gem, with the software context set up before the word. Target = capy[[bara]].
+    ruby (12): the Ruby testing gem. Every ruby prompt and every capybara word-arm prompt tokenizes the
+      name as " cap" + "y" + "bara", with the same target = capy[[bara]]; the only intended contrast is
+      the referent established by the context, the software library rather than the animal.
     unrelated (10): plain sentences with no animal, for the baseline in the contamination fraction.
   Animals: capybara, guinea pig, beaver, nutria, mara, tapir, hippo, otter, wombat, dog.
 
