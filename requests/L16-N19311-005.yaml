@@ -1,0 +1,35 @@
+# Question: does a counted increment fire the + side more strongly than degree "more"?
+# The + side ranks: counted increment > degree "more" > neutral tokens. This file tests the first step. -006 tests the second.
+# should_not_fire is degree "more".
+# Threshold: the + side's atlas q999 (0.655).
+type: activation-test
+neuron: L16-N19311
+side: "+"
+hypothesis: "The positive side goes above its q999 on a word that adds a counted increment ('two more', 'a few more', 'another', 'an additional'), and stays below q999 on degree 'more'."
+should_fire:
+  - "The train was delayed, so we waited two[[ more]] hours at the station."
+  - "She asked for three[[ more]] days to finish the report."
+  - "The recipe needs a few[[ more]] minutes in the oven."
+  - "They stayed in Rome for a couple[[ more]] nights."
+  - "The coach gave the team five[[ more]] minutes to warm up."
+  - "After the first lap, she ran four[[ more]] laps around the track."
+  - "The doctor told him to rest for several[[ more]] weeks."
+  - "He ordered two[[ extra]] chairs for the guests."
+  - "I need[[ another]] week to finish the painting."
+  - "The landlord asked for an[[ additional]] month of rent."
+  - "We have just one[[ more]] stop before home."
+should_not_fire:
+  - "As the night went on, the music got[[ more]] intense."
+  - "The second test was much[[ more]] difficult than the first."
+  - "She became[[ more]] confident after the interview."
+  - "This version of the app feels[[ more]] responsive."
+  - "The roads grew[[ more]] crowded near the city."
+  - "He is[[ more]] careful with money now."
+  - "The soup tastes[[ more]] salty than usual."
+  - "Over the years the town became[[ more]] expensive."
+  - "The questions were[[ more]] personal than I expected."
+  - "Her paintings look[[ more]] colorful in daylight."
+# the runner does not accept atlas-q999, this seems like a bug and should be fixed
+# for now, we are using the exact number
+threshold: 0.655
+by: {github: narang99, method: agent, model: claude-opus-5-5}

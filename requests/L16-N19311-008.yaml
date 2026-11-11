@@ -1,0 +1,29 @@
+type: activation-test
+neuron: L16-N19311
+side: "-"
+hypothesis: "The neuron fires (-ve) when a token talks about (it can also add) an earlier episode instead of something to an existing one. This file tests it against random baseline"
+should_fire:
+  - "Another letter arrived from the council, this[[ time]] about parking."
+  - "In 1972, a second bridge was built, this[[ time]] in steel."
+  - "Second half: same[[ as]] the first, with the visitors pressing high."
+  - "Kitchen Tips, Part III\nToday we[[ continue]] with knife skills."
+  - "Kitchen Tips\nToday we[[ continue]] with knife skills."
+  - "After a short recess, the witness returned to[[ continue]] her account."
+  - "Back on the farm, we had[[ more]] chores."
+  - "For weeks we have been reading Genesis, and on Sunday we'll go back and pick[[ up]] with chapter 12."
+  - "We stayed in Rome last spring. This spring we went back for a few[[ more]] days."
+  - "The rash lasted a week. After a short break, it came back for two[[ more]] weeks."
+  - "I ate at this cafe yesterday. Today I came back and ordered[[ another]] sandwich."
+should_not_fire:
+  - "The bakery on the corner sells fresh[[ bread]]."
+  - "A tall oak stands in the[[ garden]]."
+  - "He bought a ticket at the[[ station]]."
+  - "The children played in the[[ park]]."
+  - "She ordered soup at the[[ restaurant]]."
+  - "The phone was on the[[ desk]]."
+  - "Our neighbor owns a large[[ dog]]."
+  - "The window looks out over the[[ harbor]]."
+  - "He tied his boat to the[[ dock]]."
+  - "The recipe calls for brown[[ sugar]]."
+threshold: atlas-q99
+by: {github: narang99, method: agent, model: claude-opus-5-5}

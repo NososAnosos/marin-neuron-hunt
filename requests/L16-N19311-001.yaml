@@ -1,0 +1,30 @@
+type: activation-test
+neuron: L16-N19311
+side: "+"
+hypothesis: "The neuron fires (> q99) on the positive side if it is talking about incrementing to some existing concept. When the same token is used in other contexts, it does not fire."
+should_fire:
+  - "We camped by the river for a few[[ more]] nights before heading home."
+  - "The repair took a few[[ extra]] hours than the shop had promised."
+  - "She kept the rental car for[[ another]] few days to see the coast."
+  - "The crew worked two[[ more]] shifts before the holiday."
+  - "The builders needed several[[ more]] weeks to finish the roof."
+  - "We waited a couple[[ more]] minutes for the bus."
+  - "The festival will run for many[[ more]] years if the funding holds."
+  - "The school hired two[[ additional]] teachers this year."
+  - "The trial needs three[[ further]] months of data."
+  - "We set out ten[[ extra]] chairs for the guests."
+  - "We stayed at the cabin for fifty[[ more]] days before driving home."
+  - "The town will have to wait twenty[[ more]] years for a new bridge."
+should_not_fire:
+  - "The storm kept us home for even[[ more]] days than last winter."
+  - "I want[[ more]] coffee."
+  - "Compared with white rice, brown rice has[[ more]] fiber."
+  - "The climb only got[[ more]] steep as we went higher."
+  - "The rain kept us indoors for[[ more]] days than we planned."
+  - "She carried the boxes from one room to[[ another]]."
+  - "We will get there one way or[[ another]]."
+  - "The sauce was[[ extra]] spicy."
+  - "For[[ additional]] information, call the office."
+  - "The station is a little[[ further]] down the road."
+threshold: atlas-q99
+by: {github: narang99, method: agent, model: claude-opus-5-5}

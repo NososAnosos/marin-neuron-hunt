@@ -1,0 +1,31 @@
+# Question: does degree "more" fire the + side above its background?
+# The + side ranks: counted increment > degree "more" > neutral tokens. This file tests the second step. -005 tests the first.
+# should_not_fire is the same sentence with the target moved to a neutral word before "more".
+type: activation-test
+neuron: L16-N19311
+side: "+"
+hypothesis: "The positive side goes above its q99 on degree 'more', and stays below q99 on neutral words in the same sentences."
+should_fire:
+  - "The weather turned[[ more]] humid in July."
+  - "Her handwriting became[[ more]] careful over the term."
+  - "The hike got[[ more]] difficult after the bridge."
+  - "His answers sounded[[ more]] confident than before."
+  - "The city feels[[ more]] crowded in summer."
+  - "The new chair is[[ more]] comfortable than the old one."
+  - "As the plot thickened, the novel grew[[ more]] tense."
+  - "Our neighbors have become[[ more]] friendly lately."
+  - "The coffee here is[[ more]] bitter than at home."
+  - "The lake looked[[ more]] blue in the morning light."
+should_not_fire:
+  - "The[[ weather]] turned more humid in July."
+  - "Her[[ handwriting]] became more careful over the term."
+  - "The[[ hike]] got more difficult after the bridge."
+  - "His[[ answers]] sounded more confident than before."
+  - "The[[ city]] feels more crowded in summer."
+  - "The new[[ chair]] is more comfortable than the old one."
+  - "As the[[ plot]] thickened, the novel grew more tense."
+  - "Our[[ neighbors]] have become more friendly lately."
+  - "The[[ coffee]] here is more bitter than at home."
+  - "The[[ lake]] looked more blue in the morning light."
+threshold: atlas-q99
+by: {github: narang99, method: agent, model: claude-opus-5-5}
