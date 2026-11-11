@@ -90,5 +90,8 @@ V1 and V2 hold, P1 and P2 both pass, and the scene margin is < 0.5 or slots are 
 would otherwise be refuted but P1 or P2 fails, it is inconclusive because the scene arm was not
 validated. Reported as a South American mammal cluster if the top five are capybara, tapir, mara,
 nutria and guinea pig. Inconclusive if V2 fails, nothing passes V1, every passing-V1 readout lands
-between the confirmed and refuted bars, or a needed positive control fails. If refuted, the PR's
-conclusion stands as is: no capybara neuron or group in these candidates.
+between the confirmed and refuted bars, or a needed positive control fails. Any readout that neither
+confirms nor refutes is inconclusive, including a best readout at scene margin 0.7 with 8 of 12 slots;
+its exact margin and slots are reported. If the best readout is inconclusive, the PR headline is "no
+confirmed capybara readout; best readout inconclusive," not a clean negative result. If refuted, the
+PR's conclusion stands as is: no capybara neuron or group in these candidates.

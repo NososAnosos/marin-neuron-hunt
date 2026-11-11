@@ -89,7 +89,10 @@ refuted_if: >-
   animals score above the other five, R is reported as a South American mammal cluster, not capybara.
   Inconclusive if V2 fails (the scene arm leaks the word form, so nothing on it counts), if no readout
   passes V1, if every readout lands between the confirmed and refuted bars, or if a positive control
-  needed for a refutation fails.
+  needed for a refutation fails. Any readout that neither confirms nor refutes is inconclusive,
+  including a best readout at scene margin 0.7 with 8 of 12 slots; report its exact margin and slots.
+  If the best readout is inconclusive, the request outcome is "no confirmed capybara readout; best
+  readout inconclusive," not a clean negative result.
 compute: "182 activation forward passes of at most 48 tokens each (with BOS), no steering; all candidate readouts, random baselines and the P1 scene-fitted control are scored from the same passes (1,960 sides x 2 sites x 182 prompts); plus 330 short teacher-forced naming scores (33 contexts x 10 candidate names) for P2"
 outputs: "per prompt: activations of the 1,960 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, margins, matched-slot wins, contamination fractions, random-baseline percentiles, V1/V2/S1-S3/C1-C2 checks and the outcome; positive controls: P1 held-out scores, margins, matched-slot wins and per-animal diagnostics, P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
 by: {github: NososAnosos, method: agent, model: "fleet orchestration (Muse + Grok Bot over multiple models)"}
