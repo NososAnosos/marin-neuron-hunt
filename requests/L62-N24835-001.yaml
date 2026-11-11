@@ -90,7 +90,9 @@ prediction: >-
   prior-corrected lift on its own descriptions. A capybara concept readout, if one exists, would
   separate capybara on the scene arm without the word and stay quiet on the Ruby gem.
 pass_rule: >-
-  Each capybara readout R is scored on its own. Validity gates: (V1) R's word-arm margin is at least 1.0 and
+  Each capybara readout R is scored on its own. All scene gates are scored at the target token (" it")
+  only; next-token scores are diagnostics and cannot confirm or refute (the ruby checks C1 and C2 are
+  defined at both sites, as stated). Validity gates: (V1) R's word-arm margin is at least 1.0 and
   (V2) the tapir standardized-sum size-4 set, scored with tapir as target, does not pass S1 and S2 on the
   scene arm. Positive controls: (P1) the pooled held-out scene-fitted readout has a capybara margin of
   at least 1.0, capybara wins at least 10 of 12 matched slots, and the breadth check passes for every

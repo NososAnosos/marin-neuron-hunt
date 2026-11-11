@@ -22,7 +22,9 @@ Activation unit: one prompt with one marked single-token target. 182 prompts: sc
 x 3 descriptions x 4 shared endings, target " it"), word arm 40 (10 animals x 4 frames, target = last
 name piece), ruby arm 12, unrelated 10. Metric: each candidate readout's score at the target and the
 next token; margin of the target animal over the strongest rival, in rival-SD units, as in the coalition
-screens. Naming unit: 39 contexts (the 30 exact scene-description stems plus 9 neutral contexts) x 10
+screens. All scene gates (S1 to S4 and the refutation bar) are scored at the target token only;
+next-token scores are recorded and reported as diagnostics and cannot confirm or refute. The ruby
+checks C1 and C2 are the exception: they are defined at both sites. Naming unit: 39 contexts (the 30 exact scene-description stems plus 9 neutral contexts) x 10
 candidate names. Its score is the summed log probability of a candidate's full name after the context
 and the frame " The animal is:". For candidate a and context d, lift is log P(a | d) minus the mean
 log P(a | neutral context); using the same name in both terms subtracts its baseline under the naming
