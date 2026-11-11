@@ -30,7 +30,7 @@ procedure: |
 
   Record, for every prompt, at the target token and at the token after it (both sites, as in
   probes/capybara-v1: word_last and next): the activation of every side named in
-  requests/L62-N24835-001/readouts.json (61 named sides plus the 1,899 distinct random sides, 1,960 in
+  requests/L62-N24835-001/readouts.json (61 named sides plus the 1,920 distinct random sides, 1,981 in
   all). Also the full per-token trace for the 61 named sides.
 
   Readouts (frozen before the run, from probes/capybara-v1 @ 6402b9e, all 20 pair templates):
@@ -40,7 +40,7 @@ procedure: |
       fixed in readouts.json; they are not refit on the new prompts.
     tapir groups (fake target): tapir standardized sum and logistic at sizes 4, 10, 12, 16.
   Positive controls (not candidate readouts):
-    P1 scene-fitted readout: using the scene-arm activations of all 1,960 recorded sides at " it", fit a
+    P1 scene-fitted readout: using the scene-arm activations of all 1,981 recorded sides at " it", fit a
       binary L2 logistic readout (C = 1.0, balanced class weights) for capybara versus the nine rivals.
       Standardize each feature inside the training fold. Cross-fit in 3 folds by description index:
       hold out one description for every animal (40 prompts), train on the other two descriptions
@@ -64,10 +64,11 @@ procedure: |
   rivals' matching variants), count the target's slot wins and compare its mean score with the highest
   rival mean for that description. Scene margins and slot wins are reported per description as well as
   pooled.
-  Random baseline: 200 random sets per size (1, 4, 10, 12, 16), numpy default_rng(0), drawn from the
+  Random baseline: 1,000 random sets per size (1, 4, 10, 12, 16), numpy default_rng(0), drawn from the
   1,920 random neurons (30 per layer, all 64 layers) extracted for the coalition screens, each side's pole
   oriented by capybara minus rival mean at word_last; sum and logistic readouts fit the same way on
-  probes/capybara-v1 and frozen in readouts.json before the run.
+  probes/capybara-v1 and frozen in readouts.json before the run. The first 200 sets per size are the
+  original freeze; 800 more per size were appended on the same rng stream before the run.
   Contamination fraction at a site: (mean ruby score - mean unrelated score) / (mean capybara word-arm score
   - mean unrelated score), at the bara token and at the next token.
 prediction: >-
@@ -89,7 +90,7 @@ pass_rule: >-
   exceeds capybara's mean lift on the 27 rival contexts. P1 and P2 are refutation gates, not extra
   confirmation gates. R is a confirmed capybara-concept readout if V1 and V2 hold and: (S1) scene margin at the " it"
   target is at least 1.0; (S2) capybara beats all nine rivals in at least 10 of 12 matched scene slots; (S3)
-  the scene margin is above the 99th percentile of the 200 random sets of the same size; (S4) for each
+  the scene margin is above the 99th percentile of the 1,000 random sets of the same size; (S4) for each
   of the 3 capybara descriptions, capybara wins at least 3 of 4 slots and its mean score exceeds the
   strongest rival's mean score for that description; (C1) the ruby
   contamination fraction is at most 0.35 at both the bara token and the next token; (C2) no single ruby
@@ -108,6 +109,6 @@ refuted_if: >-
   including a best readout at scene margin 0.7 with 8 of 12 slots; report its exact margin and slots.
   If the best readout is inconclusive, the request outcome is "no confirmed capybara readout; best
   readout inconclusive," not a clean negative result.
-compute: "182 activation forward passes of at most 48 tokens each (with BOS), no steering; all candidate readouts, random baselines and the P1 scene-fitted control are scored from the same passes (1,960 sides x 2 sites x 182 prompts); plus 330 short teacher-forced naming scores (33 contexts x 10 candidate names) for P2"
-outputs: "per prompt: activations of the 1,960 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, pooled and per-description margins and matched-slot wins, contamination fractions, random-baseline percentiles, V1/V2/S1-S4/C1-C2 checks and the outcome; positive controls: P1 held-out scores, pooled and per-description margins and matched-slot wins and per-animal diagnostics, the P1 failure-protocol results (per-animal pass count, reduced-readout scores, permutation-null position), P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
+compute: "182 activation forward passes of at most 48 tokens each (with BOS), no steering; all candidate readouts, random baselines and the P1 scene-fitted control are scored from the same passes (1,981 sides x 2 sites x 182 prompts); plus 330 short teacher-forced naming scores (33 contexts x 10 candidate names) for P2"
+outputs: "per prompt: activations of the 1,981 sides in readouts.json at the target and next token, per-token traces for the 61 named sides; per readout: arm means per animal, pooled and per-description margins and matched-slot wins, contamination fractions, the exact empirical percentile among the 1,000 random sets and the 99th-percentile cutoff with its order-statistic interval, V1/V2/S1-S4/C1-C2 checks and the outcome; positive controls: P1 held-out scores, pooled and per-description margins and matched-slot wins and per-animal diagnostics, the P1 failure-protocol results (per-animal pass count, reduced-readout scores, permutation-null position), P2 raw name log probabilities, the full prior-corrected lift matrix, true-candidate lift ranks, and the P1/P2 pass checks"
 by: {github: NososAnosos, method: agent, model: "fleet orchestration (Muse + Grok Bot over multiple models)"}

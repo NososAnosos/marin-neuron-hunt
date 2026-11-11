@@ -32,9 +32,12 @@ use the same definitions as the candidate readouts.
 
 ### Controls
 
-Baseline: 200 random sets per size (1, 4, 10, 12, 16) from the 1,920 random neurons (30 per layer, all
+Baseline: 1,000 random sets per size (1, 4, 10, 12, 16) from the 1,920 random neurons (30 per layer, all
 64 layers) extracted for the coalition screens, default_rng(0), readouts fit the same way and frozen in
-readouts.json before the run; S3 needs the 99th percentile. Near misses: nine rival animals,
+readouts.json before the run (the first 200 per size are the original freeze, extended on the same rng
+stream). S3 uses the 99th percentile; each candidate's exact empirical percentile among the 1,000 sets
+is reported, and the cutoff is reported with its order-statistic interval (roughly the 984th to 996th
+ordered values at 1,000 draws); a margin inside that interval is flagged as within noise of the cutoff. Near misses: nine rival animals,
 four of them South American rodents or near neighbours (guinea pig, nutria, mara, tapir), described with
 overlapping facts (rodent, South America, rivers, orange teeth). Token-only control: the ruby arm. All
 12 ruby prompts and all 4 capybara word-arm prompts tokenize the name as " cap" + "y" + "bara", with
@@ -44,7 +47,7 @@ tapir on the same scene arm; they are expected to fail. The other side: both pol
 recorded and reported.
 
 Positive control P1, scene-fitted readout: fit a binary L2 logistic readout (C = 1.0, balanced class
-weights) for capybara versus the nine rivals on the activations of all 1,960 recorded sides at " it".
+weights) for capybara versus the nine rivals on the activations of all 1,981 recorded sides at " it".
 Features are standardized inside each training fold. Cross-fit in 3 folds by description index: hold out
 one description for every animal (40 prompts), train on the other two descriptions (80 prompts), and
 pool the held-out scores. P1 passes if the pooled held-out capybara margin is >= 1.0, capybara wins
@@ -53,7 +56,7 @@ its held-out mean score exceeds the strongest rival's mean score for that descri
 diagnostic of whether the scene arm carries animal identity in general. This readout is a control, not
 a candidate, and it is never fitted on a description it is scored on.
 
-P1 failure protocol, fixed in advance. If the full 1,960-side readout fails, three checks run on the
+P1 failure protocol, fixed in advance. If the full 1,981-side readout fails, three checks run on the
 same recorded activations. (1) The one-versus-rest results: every fold trains on 8 positives, so if at
 least five of the other nine animals pass the P1 bars, the method finds scene signal at this example
 count and starvation alone does not explain a capybara failure. (2) A reduced refit on the 61 named
