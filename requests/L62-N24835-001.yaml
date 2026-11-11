@@ -109,7 +109,10 @@ pass_rule: >-
   strongest rival's mean score for that description; (C1) the ruby
   contamination fraction is at most 0.35 at both the bara token and the next token; (C2) no single ruby
   prompt is above 0.50 at the bara token. The request is confirmed if at least one capybara readout is
-  confirmed.
+  confirmed. The PR headline is built from the verdict counts: a confirmation names the readout; if
+  every readout that passes V1 is refuted, the negative-result headline stands; any other split gets
+  a count headline ("No capybara readout confirmed. N readouts refuted as spelling-bound; M
+  inconclusive."), with the inconclusive readouts named as unresolved.
 refuted_if: >-
   Refuted (spelling-bound) for R only if V1 and V2 hold, P1 and P2 both pass, and both scene margins
   (pooled-SD and description-mean-SD) are below 0.5, or capybara wins fewer than 6 of 12 matched scene

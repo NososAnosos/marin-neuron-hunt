@@ -139,4 +139,9 @@ between the confirmed and refuted bars, or a needed positive control fails. Any 
 confirms nor refutes is inconclusive, including a best readout at scene margin 0.7 with 8 of 12 slots;
 its exact margin and slots are reported. If the best readout is inconclusive, the PR headline is "no
 confirmed capybara readout; best readout inconclusive," not a clean negative result. If refuted, the
-PR's conclusion stands as is: no capybara neuron or group in these candidates.
+PR's conclusion stands as is: no capybara neuron or group in these candidates. In general the PR
+headline is built from the verdict counts: if at least one readout confirms, the headline names it;
+if every readout that passes V1 is refuted, the negative-result headline stands; any other split gets
+a count headline ("No capybara readout confirmed. N readouts refuted as spelling-bound; M
+inconclusive."), with per-readout verdicts in the results table and the inconclusive readouts named
+as unresolved, never folded into the negative result.
