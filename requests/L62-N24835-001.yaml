@@ -57,6 +57,10 @@ procedure: |
       log P(a | neutral context) over the 3 neutral contexts. The same full name is used in both terms,
       so the candidate's baseline frequency and token length under the naming frame are subtracted.
       Report raw log probabilities, the full lift matrix, and each true candidate's lift rank.
+  Run order: stage 1 (pilot) runs the 120 scene passes and the 330 naming scores and scores P1
+    (including its failure protocol) and P2 before any candidate is scored. Stage 2 runs the remaining
+    62 passes (word, ruby, unrelated) and all candidate scoring, and runs only if at least one control
+    passes. If both controls fail, stop after the pilot and report the pilot result.
   Margin for an arm and a readout R, target animal t: (mean score of t) minus (highest mean among the
   other nine animals), divided by the SD of the other nine animals' prompt scores ("rival-SD units").
   For the scene arm the denominator is the larger of that pooled SD and the SD of the 27 rival

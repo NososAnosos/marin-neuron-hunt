@@ -75,6 +75,14 @@ mean lift on its own 3 contexts is > 0, its lift ranks first among the 10 candid
 those 3 contexts, and its mean lift on its own contexts is higher than its mean lift on the 27 rival
 contexts. The true candidate's lift rank is also reported for all 30 animal contexts.
 
+Run order, two stages. Stage 1 (pilot): the 120 scene passes and the 330 naming scores; score P2 and
+P1, including the P1 failure protocol if the full readout fails, and report both before any candidate
+is scored. Stage 2: the remaining 62 passes (word, ruby, unrelated) and all candidate scoring. Stage 2
+runs if at least one control passes: if P1 passes the refutation branch is alive; if only P2 passes,
+candidates can still be confirmed but none can be refuted. If both controls fail, the run stops after
+the pilot and reports it: the descriptions evoked capybara in neither channel, so this design cannot
+judge the candidates and the remaining GPU time is not spent.
+
 ### Data
 
 Selection data: probes/capybara-v1 on Station-house/marin-32b-neuron-atlas @ 6402b9e (20 pair templates,
