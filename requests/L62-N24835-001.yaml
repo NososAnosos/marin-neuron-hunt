@@ -104,7 +104,9 @@ pass_rule: >-
   contexts exceeds 1.0, P2 is not validated. P1 and P2 are refutation gates, not extra
   confirmation gates. R is a confirmed capybara-concept readout if V1 and V2 hold and: (S1) scene margin at the " it"
   target is at least 1.0; (S2) capybara beats all nine rivals in at least 10 of 12 matched scene slots; (S3)
-  the scene margin is above the 99th percentile of the 1,000 random sets of the same size; (S4) for each
+  the scene margin is above the 99th percentile of the 1,000 random sets of the same size and kind
+  (sum against sum, logistic against logistic; the S3 family is the 12 capybara readouts at the target
+  site, and the tapir readouts are the V2 control, never S3 tests); (S4) for each
   of the 3 capybara descriptions, capybara wins at least 3 of 4 slots and its mean score exceeds the
   strongest rival's mean score for that description; (C1) the ruby
   contamination fraction is at most 0.35 at both the bara token and the next token; (C2) no single ruby

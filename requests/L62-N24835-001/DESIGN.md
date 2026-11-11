@@ -105,7 +105,10 @@ Filters: none beyond that exact stem extraction and the description-blocked spli
 ### Noise
 
 12 scene prompts per animal; S2 allows two lost slots. Twelve capybara readouts are tested, so the random
-baseline uses the 99th percentile rather than the 95th. Held-out margins on the cached data were thin at
+baseline uses the 99th percentile rather than the 95th. The S3 family is exactly those 12 capybara
+readouts at the target site; each is compared against the random sets of its own size and kind (sum
+against sum, logistic against logistic), and the nested sets share sides, so the tests are correlated
+and 12 is the conservative count. Held-out margins on the cached data were thin at
 the next token (0.004 to 0.08 rival-SD on the worst template), so a single prompt can flip a slot; S1 is
 on the mean and S2 on slots for that reason. The scene prompts are clustered: only 3 descriptions per
 animal, each repeated with 4 endings, so the 12 slots are not 12 independent descriptions. P1 respects
