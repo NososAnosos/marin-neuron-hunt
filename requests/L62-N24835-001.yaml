@@ -88,7 +88,10 @@ prediction: >-
   mammal cluster). We expect both positive controls to pass: a readout fitted on scene descriptions
   should separate held-out capybara descriptions, and capybara's name should show the largest
   prior-corrected lift on its own descriptions. A capybara concept readout, if one exists, would
-  separate capybara on the scene arm without the word and stay quiet on the Ruby gem.
+  separate capybara on the scene arm without the word and stay quiet on the Ruby gem. Registered
+  numeric prediction: the best readout's scene margin lands roughly between 0 and 0.5 rival-SD, at
+  about 60% confidence (intuition, not a screen result); a margin of 1.0 or better with at least 10 of
+  12 slots would flip the conclusion to a claim.
 pass_rule: >-
   Each capybara readout R is scored on its own. All scene gates are scored at the target token (" it")
   only; next-token scores are diagnostics and cannot confirm or refute (the ruby checks C1 and C2 are

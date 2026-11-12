@@ -16,6 +16,13 @@ tracks the animal, not the tokens cap y bara. A low candidate scene score counts
 if the positive controls first show both that the descriptions evoke capybara in the model and that a
 scene-fitted readout can separate held-out capybara descriptions at the same target.
 
+Prediction, registered before the run: the best readout's scene margin lands low, roughly 0 to 0.5
+rival-SD, under the S1 bar, at about 60% confidence. That is intuition, not a screen result; the
+underlying belief is that capybara is distributed across possibly hundreds of neurons in a model this
+size, so no set of up to 16 sides should be expected to carry it. A scene margin of 1.0 or better with
+at least 10 of 12 slots would flip the conclusion, and the PR would be written as a claim instead of a
+negative result.
+
 ### Unit and metric
 
 Activation unit: one prompt with one marked single-token target. 182 prompts: scene arm 120 (10 animals
