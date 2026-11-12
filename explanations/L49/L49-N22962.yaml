@@ -1,0 +1,42 @@
+neuron: L49-N22962
+data: pilot/fineweb-10m-sparse
+label: "'let' before 'alone' in 'let alone'"
+positive:
+  status: explained
+  confidence: high
+  cue_type: next-token
+  explanation: >-
+    Fires on "let" when "alone" comes next, as in "X, let alone Y", and its output pushes " alone" (the logit
+    lens top four are " alone", "alone", "-alone", " Alone"). All 58 "let alone" in the 10M tokens pass the
+    threshold and 47 of them (81%) fire strongly; 48 of the side's 49 strong firings are on "let" before "alone".
+  fires_on: "'let' (any case) when the next token is 'alone', mostly after a comma: 'not even X, let alone Y'"
+  not_on: >-
+    'let' elsewhere ('let's', 'let me', 'let us'), which gets at most weak firings (1 strong firing among the 3,458
+    other 'let' tokens in the 10M), and 'alone' itself. Read from the sparse tier only, and the deep tier
+    contains no 'let alone', so this is untested.
+  evidence: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  verification: untested
+negative:
+  status: unclear
+  cue_type: mixed
+  explanation: >-
+    The strongest firings sit in the same escalation phrases: on "much" in an idiomatic "much less" and on the
+    comma just before "much less", "let alone" or "never mind"; the logit lens pushes " much". But some top
+    exemplars are unrelated clause breaks (ranks 6, 15, 20, 27, 31), comparative "much less" ("much less
+    common") mostly does not fire, and the 25,179 weaker firings are generic commas and clause boundaries, so
+    no single pattern covers the side.
+  fires_on: >-
+    strongly: 'much' in idiomatic 'much less' (18 of 27 strong after a comma) and the comma before 'much less' /
+    'let alone'; weakly: commas and clause boundaries in general
+  not_on: >-
+    comparative 'much less' ('much less common', 'much less gamey'): no stored firing in the examples read, but
+    that is the sparse tier only and the deep tier has no 'much less', so this is untested
+  evidence: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 16, 19]
+  verification: untested
+relation: variant
+relation_note: >-
+  The strong firings of both sides fall in the same 'not even X, let alone / much less Y' construction: the
+  negative side on the comma or 'much', the positive side on 'let' (in doc 160 the comma is -209 and the next
+  token 'let' is +93.5).
+by:
+  - {github: Parva-26, method: agent, model: claude-opus-5-5}
