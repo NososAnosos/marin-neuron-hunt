@@ -5,62 +5,81 @@
 2026-11-12; Kristopher Richards's go, 2026-11-12)
 **Model:** marin-community/marin-32b-base @ f19b346615212ff9a6d92c10861a9cdb100cbf97
 
-## Why this is a custom request and not an atlas screen
+## Claim
 
-We first tried to nominate candidates from the atlas pilots. The corpus cannot support it: mining
-`pilot/fineweb-1m` and `pilot/fineweb-10m-sparse` for deception material yielded, after hand review,
-1 enacted scam text, 4 honest warnings, and 0 clear honest mistakes. Two of the three contrasts below
-could not be run at all, and the one runnable check (stories about scams vs neutral text on the same
-topics) produced only a lexical artifact, a neuron firing on "Western" in "Western Union." New,
-author-written prompts are not in the pilots, so they cannot be scored locally; the Legion's 8 GB GPU
-cannot run Marin 32B. Hence this request: the runner supplies 84 short forward passes; the scoring
-happens locally, in the open, with the pass bars below fixed in advance. Full corpus-screen report:
-fleet notes, `deceptive-intent-corpus-screen.md` (available on request).
+Deceptive intent — a writer knowingly misleading a reader — is represented in Marin 32B by a small set of
+MLP neurons: a single neuron or a coalition of at most 16 whose activation at the claim-completing word
+separates enacted deception from honest persuasion, from narrated deception, and from sincere falsehood,
+all at once. Registered prediction, made before any activation was seen on these prompts: no single
+neuron passes all three contrasts; if anything passes, it is a coalition of 16 or fewer. A read-side pass
+would claim representation only, not that the set decides anything; that stronger claim would need the
+causal follow-on described under Readout.
 
-## The three contrasts (12 pairs each; prompts in `prompts.json`)
+## Unit and metric
 
-1. **Enacted deception vs honest persuasion**, matched topics (warranty, tax refund, delivery, and nine
-   more). The high arm is the lure itself; the low arm is a legitimate notice or warning on the same
-   topic, sharing vocabulary.
-2. **Enacted deception vs narrated deception.** Same facts, same claim, but the low arm reports the lure
-   (news, court complaint, case study, investigation memo, documentary, oral history, police blotter,
-   novel, historical records). Frames vary deliberately so the contrast cannot be solved by a single
-   fiction cue.
-3. **Deliberate lie vs sincere falsehood.** Both arms assert the same claim, completing at the same
-   target token. The high arm's prefix shows the writer knows it is false; the low arm's prefix shows an
-   honest basis for believing it. Every sincere arm is confident and uncorrected: no apology or hedging
-   tell for a screen to find instead.
+The unit is one MLP neuron. The measurement is its activation, silu(gate) times up, at the single marked
+target token of each prompt: 84 prompts, being 36 contrast pairs (12 per contrast, 72 texts) plus 12
+topic-matched fillers, each text 11 to 28 Marin tokens. Per neuron and per contrast the metrics are
+(a) the pair-direction rate, the share of the 12 pairs in which the high (deceptive) arm's activation
+exceeds the low arm's, and (b) the mean high-minus-low activation difference across the 12 pairs.
+Coalitions up to 16 units are scored greedily on summed activation with the same two metrics.
 
-Plus **12 topic-matched fillers**: administrative or factual sentences sharing the vocabulary
-(invoice, password, package, refund, account, and so on) that are neither lures, warnings, narrated
-scams, nor false reports.
+## Controls
 
-## Label rules
+- **Random-neuron baseline.** Per layer, 100 random neurons are scored with exactly the same
+  pair-direction and mean-difference metrics as every candidate. The baseline's 95th percentile of mean
+  difference is the bar a candidate must beat in each contrast, and if 5 or more of the 100 random
+  neurons pass all three contrasts, the screen is too loose and the whole run is inconclusive.
+- **Register control.** L20-N1234, the minced-oath / register neuron listed in the request, must fail all
+  three contrasts. If it passes, the screen is reading register or urgency rather than intent, and the
+  run is void.
+- **Filler arm.** The 12 fillers share the pairs' topic vocabulary but carry no contrast. A candidate
+  that also separates fillers from a nonexistent contrast is reading topic, not intent, and is rejected.
 
-- Pairs matched for topic and shared vocabulary, and for person/address where the contrast allows.
-- Exactly one marked target per text, the word completing the claim; the target is the same Marin
-  token in both members of a pair (tokenizer-verified in the source set, `targets_match` throughout).
-- Lures are short and non-operational: no working links, real brands, real phone numbers, or
-  step-by-step fraud instructions.
-- A warning that quotes a lure is labeled by the writer's act (honest), never as enacted deception.
-- Narrated arms run about 1.2 to 1.5 times the enacted arms' length because of the attribution frame.
+## Data
 
-## Scoring and pass bars (fixed before the run)
+The evaluation set is the 84 hand-written prompts in `prompts.json`, written 2026-11-12 specifically for
+this test against marin-community/marin-32b-base revision f19b346615212ff9a6d92c10861a9cdb100cbf97, and
+tokenizer-checked against that revision: within every pair the marked target is the same Marin token
+(single-token targets throughout). The set is fresh and held out by construction: the texts were written
+before any activation was seen on them, are not copied from the atlas corpora or from any published
+example, and no activation on them exists anywhere yet. Filters and cleaning: none. The texts are used
+as written; the only exclusions ever applied were at authoring time (no real brands, links, phone
+numbers, or operational fraud instructions). Label rules: pairs matched for topic, shared vocabulary,
+and person/address where the contrast allows; a warning that quotes a lure is labeled by the writer's
+act (honest), never as enacted deception; narrated arms carry varied frames (news, court complaint,
+case study, investigation memo, documentary, oral history, police blotter, novel, historical records) so
+no single fiction cue solves contrast 2; every sincere-falsehood arm is confident and uncorrected, so
+there is no apology or hedging tell. An atlas-first route was tried and is documented here because it
+shaped this design: mining the FineWeb pilots yielded 1 enacted scam text, 4 honest warnings, and 0
+clear honest mistakes, so the corpus could not nominate candidates and two of the three contrasts could
+not be run from it at all.
 
-Per neuron, per contrast: pair-direction rate and mean high-minus-low activation difference at the
-marked token. Coalitions up to 16 scored greedily on summed activation. Per layer, 100 random neurons
-scored identically form the baseline. A candidate passes only if, in **all three** contrasts, the high
-arm wins at least 80 percent of pairs **and** the mean difference beats the 95th percentile of the
-random baseline. Headline: the smallest passing set.
+## Noise
 
-Controls, all pre-registered:
+The readout itself is deterministic: one forward pass per prompt on a fixed model revision, no sampling,
+no generation, so rerunning the identical request returns the identical activations. The real noise is
+item sampling: 12 pairs per contrast is a small set, and a neuron can look separating by luck. That noise
+floor is estimated empirically, per layer, by the random-neuron baseline distribution (100 random neurons
+scored identically): a candidate counts only where its mean difference clears the baseline's 95th
+percentile, and the 80 percent pair-direction rule (at least 10 of 12 pairs in the predicted direction)
+is the second, independent guard against a few large pairs carrying the mean. Coalition scores inherit
+the same bars; no coalition is reported without the random-baseline comparison at its own layer.
 
-- **L20-N1234 must fail.** It is the minced-oath / register neuron. If it passes, the screen is reading
-  register or urgency and the run is void.
-- **Random-neuron tripwire.** If 5 or more of the 100 random neurons in any layer pass all three
-  contrasts, the screen is too loose; the run is inconclusive.
-- **Fillers** are the no-contrast sanity arm: a candidate that also "separates" fillers from their
-  (nonexistent) contrast is reading topic, not intent.
+## Readout
+
+A candidate passes only if it clears all three contrasts: pair-direction rate at least 80 percent
+(at least 10 of 12 pairs) in each contrast, and mean difference above the 95th percentile of the
+random-neuron baseline in each contrast. The headline result is the smallest passing set, single neuron
+or coalition up to 16. The claim is refuted, and will be reported as a clean null, if no single neuron
+and no coalition up to 16 clears all three contrasts while the controls behave (L20-N1234 failing, fewer
+than 5 of 100 random neurons passing). That null would mean deceptive intent is not a small localized
+MLP coalition recoverable by this method, or that these labels do not isolate it; it would not prove
+Marin has no representation of deception, since the feature could live in attention, in a residual
+direction, or in a larger set. A read-side pass licenses only a follow-on causal request (type B for a
+single neuron, type E for a coalition; log-probability at a marked slot against the same random baseline,
+on short already-written frames, never generated lures) before any decider language, on the precedent of
+L20-N1234-004. The fleet publishes its scoring either way, pass or null.
 
 ## Declared confounds (seen before filing, stated so they are on record)
 
@@ -74,16 +93,10 @@ Controls, all pre-registered:
 - **Contrast 3 legibility.** Intent must be legible in text to be tested at all; the knowledge state is
   carried in each arm's prefix clause by design. That is the operationalization, stated openly.
 
-## Stage 2, only on a pass
+## Why this is a custom request and not a menu contrast test
 
-A read-side pass licenses a causal follow-on before any "decider" language: type B steering for a
-single neuron, type E for a coalition, log-probability at a marked slot against the 100-random-neuron
-baseline, on short already-written frames, never generated lures. A read-side pass with a causal null
-is reported as a reader, not a decider, on the precedent of L20-N1234-004.
-
-## What a null would mean
-
-No unit and no set of up to 16 passes all three contrasts while the controls behave. Reported as a
-finding: deceptive intent is not a small, localized MLP coalition recoverable this way, or these labels
-do not isolate it. Not evidence that Marin lacks the representation; attention, residual directions,
-and larger sets remain open.
+The menu's contrast type (D) tests a named neuron. This filing has no named candidate: the atlas screen
+that would have nominated one was run first and failed at the data layer (see Data). What the runner is
+asked for is the measurement only: 84 forward passes of at most 28 tokens, no generation, returning the
+full MLP activation table at each marked token. Scoring happens locally with the same machinery as the
+fleet's capybara pair screen, under the bars fixed above.
